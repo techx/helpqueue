@@ -1,0 +1,16 @@
+{
+  "name": "techx-react-flask-template",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "concurrently": "^4.1.1"
+  },
+  "scripts": {
+    "start": "cp .env client/.env; cd client && yarn start",
+    "build": "cd client && yarn install && yarn build",
+    "postbuild": "cp -r client/build server/; python postbuild.py",
+    "gunicorn": "gunicorn run_server:app",
+    "gunicorn-dev": "gunicorn -b 127.0.0.1:5000 --reload run_server:app",
+    "dev": "concurrently --kill-others \"yarn start\" \"npm run gunicorn-dev\""
+  }
+}
