@@ -9,6 +9,7 @@ Created and maintained by: TheReddKing (TechX)
     pip install --upgrade pip
     pip install -r requirements.txt
     yarn
+    cd client && yarn
 
 ## Dev run
 
