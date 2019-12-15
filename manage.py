@@ -3,7 +3,6 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 from server.app import app, db
-import config
 
 # This file is only necessary to be called
 # You are using a database
