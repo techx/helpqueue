@@ -1,8 +1,9 @@
 from urllib.parse import quote
 from flask_restful import Resource, reqparse
 from server.controllers.authentication import authenticate_firsttime
-from server.controllers.users import set_name
-from server.controllers.settings import get_public_settings
+from server.controllers.users import set_name, set_admin
+from server.server_constants import *
+from server.controllers.settings import get_public_settings, get_setting
 from server.api.v1 import return_failure, return_success
 
 LOGIN_PARSER = reqparse.RequestParser(bundle_errors=True)
@@ -26,7 +27,9 @@ class ClientLogin(Resource):
         if (client is None):
             # Unauthenticated
             return return_failure("login credentials invalid")
-            
+
+        if (not client.user.admin_is and client.user.email == get_setting(None, SETTING_MASTER_USER, override=True)):
+            set_admin(None, client.user, True, override=True)
         if ('name' in data):
             set_name(client.user, data['name'])
             

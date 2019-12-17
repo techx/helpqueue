@@ -61,7 +61,7 @@ const ProfilePage = () => {
       setCookie("name", tempName);
     }
     if (tempSkills) {
-      setSkills(tempSkills.split(";"));
+      setSkills(tempSkills.split(";").filter(e => e.length > 0));
     }
   }, [tempName, tempSkills]);
 

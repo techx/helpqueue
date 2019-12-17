@@ -12,7 +12,7 @@ def get_all_users(user, override = False):
   """
   Gets all users
   """
-  if not user.admin_is and not override:
+  if not override and not user.admin_is:
     return []
   return User.query.all()
 
@@ -24,9 +24,9 @@ def set_mentor(admin_user, user, value):
   db.session.commit()
   return True
 
-def set_admin(admin_user, user, value):
+def set_admin(admin_user, user, value, override = True):
   # You have to be admin
-  if not admin_user.admin_is:
+  if not override and not admin_user.admin_is:
     return False
   # Master admin cannot be unadmined
   if value is False and get_setting(admin_user, SETTING_MASTER_USER) == user.email:
