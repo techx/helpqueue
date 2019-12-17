@@ -10,7 +10,6 @@ import QueueRequest from "./components/QueueRequest";
 import QueueMentor from "./components/QueueMentor";
 import AdminPage from "./components/AdminPage";
 import ProfilePage from "./components/ProfilePage";
-import MentorLoginPage from "./components/MentorLoginPage";
 
 const App: React.FC = () => {
   return (
@@ -22,7 +21,6 @@ const App: React.FC = () => {
             <Route exact path="/login/auth" component={LoginCallback} />
             <Route path="/m" component={QueueMentor} />
             <Route path="/login" component={LandingPage} />
-            <Route path="/login/mentor" component={MentorLoginPage} />
             <Route path="/profile" component={ProfilePage} />
             <Route path="/admin" component={AdminPage} />
             <Route path="/" component={QueueRequest} />

@@ -6,11 +6,11 @@ import "react-table-6/react-table.css";
 import "jsoneditor-react/es/editor.min.css";
 import React, { useState, useEffect } from "react";
 import useLogin from "../hooks/useLogin";
-import { Button } from "reactstrap";
+import { Button, Container } from "reactstrap";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 
 const AdminPage = () => {
-  const { redirectToDopeAuth, getCredentials } = useLogin();
+  const { getCredentials } = useLogin();
   const [settingsJSON, setSettingsJSON] = useState(null);
   const [data, setData] = useState([]);
   const promote = async (userID: string, type: string, value: boolean) => {
@@ -81,14 +81,14 @@ const AdminPage = () => {
     getData();
   }, []);
   return (
-    <>
+    <Container>
       <h1>Admin Settings Page</h1>
       {settingsJSON ? (
         <Editor value={settingsJSON} onChange={setSettingsJSON} />
       ) : null}
       <Button onClick={updateData}> Save Settings </Button>
       <ReactTable data={data} columns={columns} />
-    </>
+    </Container>
   );
 };
 

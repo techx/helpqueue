@@ -2,6 +2,7 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import useLogin from "../hooks/useLogin";
 import useViewer from "../hooks/useViewer";
+import { join } from "path";
 
 enum Status {
   start,
@@ -21,6 +22,8 @@ const LoginCallback = (props: RouteComponentProps) => {
     const id = search.get("uid");
     const token = search.get("token");
     const email = search.get("email");
+    const mentor_key = search.get("mentor_key");
+
     if (isLoggedIn) {
       window.location.replace("/profile");
     }
@@ -31,7 +34,7 @@ const LoginCallback = (props: RouteComponentProps) => {
       loginStatus === Status.start
     ) {
       setLoginStatus(0);
-      login(id, email, token).then((success: Boolean) => {
+      login(id, email, token, {"mentor_key": mentor_key}).then((success: Boolean) => {
         setLoginStatus(success ? Status.succeed : Status.failed);
       });
     } else if (loginStatus === Status.start) {

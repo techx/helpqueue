@@ -16,15 +16,15 @@ def get_all_users(user, override = False):
     return []
   return User.query.all()
 
-def set_mentor(admin_user, user, value):
+def set_mentor(admin_user, user, value, override = False):
   # You have to be admin
-  if not admin_user.admin_is:
+  if not override and not admin_user.admin_is:
     return False
   user.mentor_is = value
   db.session.commit()
   return True
 
-def set_admin(admin_user, user, value, override = True):
+def set_admin(admin_user, user, value, override = False):
   # You have to be admin
   if not override and not admin_user.admin_is:
     return False
@@ -50,6 +50,14 @@ def set_skills(user, skills):
 def user_get_ticket(user):
   # Getting current ticket
   query = Ticket.query.filter(and_(Ticket.requestor==user,Ticket.status < 3))
+  if (query.count() > 0):
+    return query.first()
+  # No current ticket
+  return None
+
+def user_get_claim_ticket(user):
+  # Getting current ticket
+  query = Ticket.query.filter(and_(Ticket.claimant==user,Ticket.status < 3))
   if (query.count() > 0):
     return query.first()
   # No current ticket

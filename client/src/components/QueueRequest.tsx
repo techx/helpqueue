@@ -36,6 +36,19 @@ const QueueRequest = () => {
       setTicket(null);
     }
   };
+  const cancelTicket = async () => {
+    if (ticket == null) {
+      return;
+    }
+    const res = await ServerHelper.post(ServerURL.cancelTicket, {
+      ...getCredentials(),
+      ticket_id: ticket.id
+    });
+    if (res.success) {
+      setTicket(null);
+      setCTicketQuestion(ticket.data.question);
+    }
+  }
   useEffect(() => {
     // On load check to see what the status is of the ticket
     getTicket();
@@ -125,16 +138,7 @@ const QueueRequest = () => {
           Contact: {ticket.data.contact}
         </p>
         <Button
-          onClick={async () => {
-            const res = await ServerHelper.post(ServerURL.cancelTicket, {
-              ...getCredentials(),
-              ticket_id: ticket.id
-            });
-            if (res.success) {
-              setTicket(null);
-              setCTicketQuestion(ticket.data.question);
-            }
-          }}
+          onClick={cancelTicket}
         >
           Cancel Ticket
         </Button>
@@ -144,6 +148,11 @@ const QueueRequest = () => {
     queueCard = (
       <>
         <p>You have been claimed by: {ticket.claimed_by} </p>
+        <Button
+          onClick={cancelTicket}
+        >
+          Cancel Ticket
+        </Button>
       </>
     );
   } else {

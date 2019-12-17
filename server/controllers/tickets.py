@@ -65,8 +65,8 @@ def cancel_ticket(user, ticket):
   now = datetime.datetime.now()
 
   # since ticket was never claimed then we don't do anything
-  # You can only cancel ticket if the ticket is currently claimable
-  if ticket.status == 0 or ticket.status == 2:
+  # You can only cancel ticket if the ticket is not already dead
+  if ticket.status < 3:
     # Only the requester (or admin) can close
     if (ticket.requestor != user and not user.admin_is):
       return False

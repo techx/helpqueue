@@ -5,14 +5,16 @@ import {
   Input,
   Card,
   CardBody,
-  CardTitle
+  CardTitle,
+  CardFooter,
+  CardText
 } from "reactstrap";
 import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import { Ticket } from "./Types";
 
 const QueueMentor = () => {
-  const { redirectToDopeAuth, getCredentials } = useLogin();
+  const { getCredentials } = useLogin();
   const [tickets, setTickets] = useState<Ticket[] | null>(null);
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [queueLength, setQueueLength] = useState(0);
@@ -44,28 +46,32 @@ const QueueMentor = () => {
     if (tickets == null || queueLength == 0) {
       queueCard = <p>There are no tickets :(</p>;
     } else {
-    queueCard = tickets.map(ticket => {
-      return (
-        <p key={ticket.id}>
-          {ticket.requested_by} ({ticket.data.location}) asks:{" "}
-          {ticket.data.question}
-          <Button
-            onClick={async () => {
-              const res = await ServerHelper.post(ServerURL.claimTicket, {
-                ...getCredentials(),
-                ticket_id: ticket.id
-              });
-              if (res.success) {
-                setTicket(res.ticket);
-              }
-            }}
-          >
-            Claim
-          </Button>
-        </p>
-      );
-    });
-  }
+      queueCard = tickets.map(ticket => {
+        return (
+          <Card key={ticket.id}>
+            <CardBody>
+              <CardTitle>
+                {ticket.requested_by} ({ticket.data.location}) asks:
+              </CardTitle>
+              <CardText>{ticket.data.question}</CardText>
+                <Button
+                  onClick={async () => {
+                    const res = await ServerHelper.post(ServerURL.claimTicket, {
+                      ...getCredentials(),
+                      ticket_id: ticket.id
+                    });
+                    if (res.success) {
+                      setTicket(res.ticket);
+                    }
+                  }}
+                >
+                  Claim
+                </Button>
+            </CardBody>
+          </Card>
+        );
+      });
+    }
   } else if (ticket != null) {
     // Ticket has been claimed
     queueCard = (
@@ -78,33 +84,33 @@ const QueueMentor = () => {
           <br />
           Contact: {ticket.data.contact}
         </p>
-          <Button
-            onClick={async () => {
-              const res = await ServerHelper.post(ServerURL.closeTicket, {
-                ...getCredentials(),
-                ticket_id: ticket.id
-              });
-              if (res.success) {
-                setTicket(null);
-                getTickets();
-              }
-            }}
-          >
-            Close Ticket
-          </Button>
-          <Button
-            onClick={async () => {
-              const res = await ServerHelper.post(ServerURL.unclaimTicket, {
-                ...getCredentials(),
-                ticket_id: ticket.id
-              });
-              if (res.success) {
-                getTickets();
-              }
-            }}
-          >
-            Unclaim
-          </Button>
+        <Button
+          onClick={async () => {
+            const res = await ServerHelper.post(ServerURL.closeTicket, {
+              ...getCredentials(),
+              ticket_id: ticket.id
+            });
+            if (res.success) {
+              setTicket(null);
+              getTickets();
+            }
+          }}
+        >
+          Close Ticket
+        </Button>
+        <Button
+          onClick={async () => {
+            const res = await ServerHelper.post(ServerURL.unclaimTicket, {
+              ...getCredentials(),
+              ticket_id: ticket.id
+            });
+            if (res.success) {
+              getTickets();
+            }
+          }}
+        >
+          Unclaim
+        </Button>
       </>
     );
   }
@@ -112,7 +118,9 @@ const QueueMentor = () => {
     <Container>
       <Card>
         <CardBody>
-          <CardTitle><h2>Mentor Queue</h2></CardTitle>
+          <CardTitle>
+            <h2>Mentor Queue</h2>
+          </CardTitle>
           Queue length: {queueLength}
           {queueCard}
         </CardBody>

@@ -28,6 +28,7 @@ const ProfilePage = () => {
     const res = await ServerHelper.post(ServerURL.userTicket, getCredentials());
     if (res.success) {
       setUser(res.user);
+      setName(res.user.name);
     } else {
       setUser(null);
     }

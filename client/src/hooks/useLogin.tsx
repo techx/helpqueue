@@ -12,36 +12,41 @@ const useLogin = () => {
   ]);
   const {settings} = useViewer();
 
-  const redirectToDopeAuth = () => {
+  const redirectToDopeAuth = (data?: [string, string][]) => {
+    let otherdata = "";
+    if (data != null) {
+      data.forEach(value => {
+        otherdata += `${value[0]}=${value[1]}&`;
+      });
+    }
+    if (otherdata.length > 0) {
+      otherdata = `?${otherdata.substring(0, otherdata.length - 1)}`;
+    }
     window.location.href =
-        "https://dopeauth.com/login/" +
-        encodeURIComponent((settings ? settings.readonly_master_url : "") + "/login/auth");
+      "https://dopeauth.com/login/" +
+      encodeURIComponent(
+        (settings ? settings.readonly_master_url : "") + "/login/auth"
+      ) +
+      otherdata;
   };
 
   const login = async (
     uid: string,
     email: string,
-    token: string
+    token: string,
+    data?: any,
   ): Promise<Boolean> => {
+    if (data == null) {
+      data = {};
+    }
     try {
-      const config = {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: email,
-          token: token,
-          uid: uid
-        })
-      };
       // Server side check!
       const json = await ServerHelper.post(ServerURL.login, {
         email: email,
         token: token,
         uid: uid,
-        name: cookies['name']
+        name: cookies['name'],
+        ...data
       });
       if (json["success"]) {
         setCookie("token", json["token"], { path: "/" });

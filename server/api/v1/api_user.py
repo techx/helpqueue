@@ -32,7 +32,7 @@ class UserRetrieveAdmin(Resource):
 
     @require_login(USER_PARSER)
     def post(self, data, user):
-      ticket = user_get_ticket(user)
+      ticket = user_get_claim_ticket(user)
       tickets = get_claimable_tickets(user)
       total_tickets = len(tickets) if tickets is not None else 0
       return return_success({
