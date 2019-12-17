@@ -21,8 +21,8 @@
   ],
   "env": {
     "REACT_APP_SITEURL": {
-      "description": "URL of site",
-      "generator": "http://techx.io"
+      "description": "URL of site (usually [appname].herokuapp.com)",
+      "value": "somethingsomething.herokuapp.com"
     },
     "MASTER_EMAIL": {
       "description": "Email of the default ADMIN user (prevents their admin rights from being revoked)",
