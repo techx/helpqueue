@@ -1,7 +1,6 @@
 env/
 .env
 **/__pycache__/
-migrations
 service_account.json
 
 

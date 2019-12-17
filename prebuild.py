@@ -20,3 +20,14 @@ if not path.exists(".env"):
 else:
     print("******* WARNING *********")
     print("******* Heroku Post Build is current disabled *********")
+
+from server.controllers.settings import *
+
+for setting in ALLDEFAULTSETTINGS:
+  if (get_setting(None,setting, True) is None):
+    set_setting(None, setting, "CHANGE ME", override=True)
+
+if (get_setting(None, SETTING_OFFICIAL_MESSAGE, True) is None):
+  set_setting(None, SETTING_OFFICIAL_MESSAGE, "", override=True)
+if (get_setting(None, SETTING_QUEUE_ON, True) is None):
+  set_setting(None, SETTING_QUEUE_ON, True, override=True)

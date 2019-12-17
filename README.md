@@ -1,4 +1,4 @@
-# Template React + Flask framework
+# Help LIFO
 
 Created and maintained by: TheReddKing (TechX)
 
@@ -14,3 +14,8 @@ Created and maintained by: TheReddKing (TechX)
 ## Dev run
 
     yarn run dev
+
+## TODO (kevinfang): App Success Deploy
+{
+  "success_url": "/welcome"
+}

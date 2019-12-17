@@ -1,0 +1,32 @@
+{
+  "name": "TechX HelpLIFO",
+  "description": "A simple help queue interface for anything!",
+  "repository": "https://github.com/techx/helplifo",
+  "keywords": ["helpq", "help queue"],
+  "addons": [
+    {
+      "plan": "heroku-postgresql",
+      "options": {
+        "version": "9.5"
+      }
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    },
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "REACT_APP_SITEURL": {
+      "description": "URL of site",
+      "generator": "http://techx.io"
+    },
+    "MASTER_EMAIL": {
+      "description": "Email of the default ADMIN user (prevents their admin rights from being revoked)",
+      "value": "kevin21@mit.edu"
+    }
+  }
+}

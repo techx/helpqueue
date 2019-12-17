@@ -6,9 +6,13 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AppHeader from "./AppHeader";
 import LandingPage from "./components/LandingPage";
 import LoginCallback from "./components/LoginCallback";
+import QueueRequest from "./components/QueueRequest";
+import QueueMentor from "./components/QueueMentor";
+import AdminPage from "./components/AdminPage";
+import ProfilePage from "./components/ProfilePage";
+import MentorLoginPage from "./components/MentorLoginPage";
 
 const App: React.FC = () => {
-  document.title = process.env.REACT_APP_NAME || "";
   return (
     <Router>
       <CookiesProvider>
@@ -16,7 +20,12 @@ const App: React.FC = () => {
           <AppHeader />
           <Switch>
             <Route exact path="/login/auth" component={LoginCallback} />
-            <Route path="/" component={LandingPage} />
+            <Route path="/m" component={QueueMentor} />
+            <Route path="/login" component={LandingPage} />
+            <Route path="/login/mentor" component={MentorLoginPage} />
+            <Route path="/profile" component={ProfilePage} />
+            <Route path="/admin" component={AdminPage} />
+            <Route path="/" component={QueueRequest} />
           </Switch>
         </div>
       </CookiesProvider>

@@ -18,11 +18,11 @@ const LoginCallback = (props: RouteComponentProps) => {
   const search = new URLSearchParams(props.location.search);
   const { login } = useLogin();
   React.useEffect(() => {
-    const id = search.get("id");
+    const id = search.get("uid");
     const token = search.get("token");
     const email = search.get("email");
     if (isLoggedIn) {
-      window.location.replace("/");
+      window.location.replace("/profile");
     }
     if (
       id != null &&

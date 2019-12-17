@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "cp .env client/.env; cd client && yarn start",
-    "prebuild": "python prebuild.py",
+    "prebuild": "python prebuild.py && python manage.py db upgrade",
     "build": "cd client && yarn install && yarn build",
     "postbuild": "cp -r client/build server/",
     "gunicorn": "gunicorn run_server:app",
