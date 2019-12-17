@@ -30,7 +30,7 @@ const AppHeader: React.FC = () => {
   const getSettings = async () => {
     const res = await ServerHelper.post(ServerURL.settings, {});
     if (res.success) {
-      setCookies("settings", res.settings);
+      setCookies("settings", res.settings, { path: "/" });
     }
   };
 

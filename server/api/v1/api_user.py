@@ -59,7 +59,6 @@ class UserProfileUpdate(Resource):
     def post(self, data, user):
       set_name(user, data['name'])
       set_affiliation(user, data['affiliation'])
-      print(data)
       set_skills(user, data['skills'])
       return return_success({
         'user': user.json()

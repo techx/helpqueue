@@ -15,7 +15,7 @@ const useLogin = () => {
   const redirectToDopeAuth = () => {
     window.location.href =
         "https://dopeauth.com/login/" +
-        encodeURIComponent((process.env.REACT_APP_SITEURL || "") + "/login/auth");
+        encodeURIComponent((settings ? settings.readonly_master_url : "") + "/login/auth");
   };
 
   const login = async (

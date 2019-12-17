@@ -27,4 +27,5 @@ export type ClientSettings = {
   app_creator: string;
   queue_status: string;
   queue_message: string;
+  readonly_master_url: string;
 }
