@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./App.css";
 import { CookiesProvider } from "react-cookie";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -11,23 +11,31 @@ import QueueMentor from "./components/QueueMentor";
 import AdminPage from "./components/AdminPage";
 import ProfilePage from "./components/ProfilePage";
 
+import Alert from "react-s-alert";
+
+import "react-s-alert/dist/s-alert-default.css";
+import "react-s-alert/dist/s-alert-css-effects/slide.css";
+
 const App: React.FC = () => {
   return (
-    <Router>
-      <CookiesProvider>
-        <div className="App">
-          <AppHeader />
-          <Switch>
-            <Route exact path="/login/auth" component={LoginCallback} />
-            <Route path="/m" component={QueueMentor} />
-            <Route path="/login" component={LandingPage} />
-            <Route path="/profile" component={ProfilePage} />
-            <Route path="/admin" component={AdminPage} />
-            <Route path="/" component={QueueRequest} />
-          </Switch>
-        </div>
-      </CookiesProvider>
-    </Router>
+    <Fragment>
+      <Router>
+        <CookiesProvider>
+          <div className="App">
+            <AppHeader />
+            <Switch>
+              <Route exact path="/login/auth" component={LoginCallback} />
+              <Route path="/m" component={QueueMentor} />
+              <Route path="/login" component={LandingPage} />
+              <Route path="/profile" component={ProfilePage} />
+              <Route path="/admin" component={AdminPage} />
+              <Route path="/" component={QueueRequest} />
+            </Switch>
+          </div>
+        </CookiesProvider>
+      </Router>
+      <Alert stack={{ limit: 3 }} />
+    </Fragment>
   );
 };
 

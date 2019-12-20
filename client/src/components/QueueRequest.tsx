@@ -15,6 +15,7 @@ import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import useViewer from "../hooks/useViewer";
 import { Ticket, User } from "./Types";
+import createAlert, { AlertType } from "./Alert";
 
 const QueueRequest = () => {
   const { redirectToDopeAuth, getCredentials } = useLogin();
@@ -48,7 +49,7 @@ const QueueRequest = () => {
       setTicket(null);
       setCTicketQuestion(ticket.data.question);
     }
-  }
+  };
   useEffect(() => {
     // On load check to see what the status is of the ticket
     getTicket();
@@ -100,12 +101,23 @@ const QueueRequest = () => {
         <br />
         <Button
           onClick={async () => {
+            if (cTicketQuestion.length === 0) {
+              createAlert(AlertType.Warning, "You need to ask a question!");
+              return;
+            }
+            if (cTicketLocation.length === 0) {
+              createAlert(
+                AlertType.Warning,
+                "Please provide a location so a mentor can find you!"
+              );
+              return;
+            }
             const res = await ServerHelper.post(ServerURL.createTicket, {
               ...getCredentials(),
               data: JSON.stringify({
                 question: cTicketQuestion,
                 location: cTicketLocation,
-                contact: cTicketContact
+                contact: cTicketContact.length === 0 ? "N/A" : cTicketContact
               })
             });
             if (res.success) {
@@ -114,6 +126,7 @@ const QueueRequest = () => {
             }
           }}
           color="primary"
+          className="col-12"
         >
           Create Ticket
         </Button>
@@ -123,36 +136,33 @@ const QueueRequest = () => {
     // Unclaimed
     queueCard = (
       <>
-        <CardTitle>Position in Queue: {queueLength}</CardTitle>
+        <CardTitle><h2>Waiting for Mentor...</h2></CardTitle>
         <p>
-          Posted:{" "}
+        <b>Position in Queue:</b> {queueLength}
+        <br/>
+          <b>Posted:</b>{' '}
           {ticket.minutes < 3
             ? "few minutes ago"
             : ticket.minutes + " minutes ago"}
         </p>
         <p>
-          Question: {ticket.data.question}
+          <b>Question:</b> {ticket.data.question}
           <br />
-          Location: {ticket.data.location}
+          <b>Location:</b> {ticket.data.location}
           <br />
-          Contact: {ticket.data.contact}
+          <b>Contact:</b> {ticket.data.contact}
         </p>
-        <Button
-          onClick={cancelTicket}
-        >
-          Cancel Ticket
-        </Button>
+        <Button onClick={cancelTicket}
+                  className="col-12"
+                  color="danger">Cancel Ticket</Button>
       </>
     );
   } else if (ticket.status == 1) {
     queueCard = (
       <>
         <p>You have been claimed by: {ticket.claimed_by} </p>
-        <Button
-          onClick={cancelTicket}
-        >
-          Cancel Ticket
-        </Button>
+        <Button onClick={cancelTicket}
+                  className="col-12" color="danger">Cancel Ticket</Button>
       </>
     );
   } else {
@@ -162,12 +172,14 @@ const QueueRequest = () => {
     <Container>
       <Card>
         <CardBody>
-          <CardTitle>{user && user.admin_is ? (
-            <Button href="/admin">Admin Page</Button>
-          ) : null}
-          {user && user.mentor_is ? (
-            <Button href="/m">Mentor Queue</Button>
-          ) : null}</CardTitle>
+          <CardTitle>
+            {user && user.admin_is ? (
+              <Button href="/admin" color="info">Admin Page</Button>
+            ) : null}
+            {user && user.mentor_is ? (
+              <Button href="/m" color="success">Mentor Queue</Button>
+            ) : null}
+          </CardTitle>
           {settings && settings.queue_status == "true"
             ? queueCard
             : "The queue is currently closed"}

@@ -12,6 +12,7 @@ import {
 import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import { Ticket } from "./Types";
+import createAlert, { AlertType } from "./Alert";
 
 const QueueMentor = () => {
   const { getCredentials } = useLogin();
@@ -48,10 +49,10 @@ const QueueMentor = () => {
     } else {
       queueCard = tickets.map(ticket => {
         return (
-          <Card key={ticket.id}>
+          <Card key={ticket.id} className="my-2">
             <CardBody>
               <CardTitle>
-                {ticket.requested_by} ({ticket.data.location}) asks:
+                {ticket.requested_by} <b>asked</b> {ticket.minutes} <b>mins ago</b>:
               </CardTitle>
               <CardText>{ticket.data.question}</CardText>
                 <Button
@@ -62,10 +63,14 @@ const QueueMentor = () => {
                     });
                     if (res.success) {
                       setTicket(res.ticket);
+                      createAlert(AlertType.Success, "Claimed ticket");
                     }
                   }}
+                  className="col-12"
+                  outline
+                  color="success"
                 >
-                  Claim
+                  Claim <b>@ the location of</b> {ticket.data.location}
                 </Button>
             </CardBody>
           </Card>
@@ -93,8 +98,11 @@ const QueueMentor = () => {
             if (res.success) {
               setTicket(null);
               getTickets();
+              createAlert(AlertType.Success, "Closed ticket");
             }
           }}
+          className="col-6"
+          color="success"
         >
           Close Ticket
         </Button>
@@ -106,8 +114,11 @@ const QueueMentor = () => {
             });
             if (res.success) {
               getTickets();
+              createAlert(AlertType.Success, "Unclaimed ticket");
             }
           }}
+          className="col-6"
+          outline
         >
           Unclaim
         </Button>

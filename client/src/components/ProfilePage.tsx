@@ -15,6 +15,7 @@ import useViewer from "../hooks/useViewer";
 import TagsInput from "react-tagsinput";
 import "react-tagsinput/react-tagsinput.css"; // If using WebPack and style-loader.
 import { useCookies } from "react-cookie";
+import createAlert, { AlertType } from "./Alert";
 
 const ProfilePage = () => {
   const { getCredentials } = useLogin();
@@ -31,9 +32,14 @@ const ProfilePage = () => {
       setName(res.user.name);
     } else {
       setUser(null);
+      createAlert(AlertType.Error, "Failed to get user, are you logged in?");
     }
   };
   const saveProfile = async (shouldRedirect:boolean) => {
+    if (name.length === 0) {
+      createAlert(AlertType.Error, "Name must be nonempty");
+      return;
+    }
     const res = await ServerHelper.post(ServerURL.userUpdate, {
       ...getCredentials(),
       name: name,
@@ -42,8 +48,10 @@ const ProfilePage = () => {
     });
     if (res.success) {
       setUser(res.user);
+      createAlert(AlertType.Success, "Updated profile");
     } else {
       setUser(null);
+      createAlert(AlertType.Error, "Failed to update profile");
     }
     if (shouldRedirect) {
       window.location.href="/";

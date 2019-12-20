@@ -8,7 +8,7 @@ from sqlalchemy import or_, and_
 def get_claimable_tickets(user, override=False):
   if not user.mentor_is and not override:
     return []
-  tickets = Ticket.query.filter(or_(Ticket.status == 0, Ticket.status == 2)).all()
+  tickets = Ticket.query.filter(or_(Ticket.status == 0, Ticket.status == 2)).order_by(Ticket.id).all()
   return tickets
 
 def get_ticket(ticket_id):

@@ -4,12 +4,24 @@ import { JsonEditor as Editor } from "jsoneditor-react";
 import ReactTable from "react-table-6";
 import "react-table-6/react-table.css";
 import "jsoneditor-react/es/editor.min.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import useLogin from "../hooks/useLogin";
-import { Button, Container } from "reactstrap";
+import {
+  Button,
+  Container,
+  Alert,
+  CardBody,
+  Card,
+  CardTitle,
+  Row,
+  Col,
+  Input
+} from "reactstrap";
 import ServerHelper, { ServerURL } from "./ServerHelper";
+import createAlert, { AlertType } from "./Alert";
 
 const AdminPage = () => {
+  document.body.classList.add("white");
   const { getCredentials } = useLogin();
   const [settingsJSON, setSettingsJSON] = useState(null);
   const [data, setData] = useState([]);
@@ -23,6 +35,9 @@ const AdminPage = () => {
     if (res.success) {
       setSettingsJSON(res.settings);
       setData(res.users);
+      createAlert(AlertType.Success, "Updated User");
+    } else {
+      createAlert(AlertType.Error, "Failed to update User");
     }
   };
   const columns = [
@@ -64,6 +79,11 @@ const AdminPage = () => {
     if (res.success) {
       setSettingsJSON(res.settings);
       setData(res.users);
+    } else {
+      createAlert(
+        AlertType.Error,
+        "Failed to get admin data, are you logged in?"
+      );
     }
   };
 
@@ -75,20 +95,47 @@ const AdminPage = () => {
     if (res.success) {
       setSettingsJSON(res.settings);
       setData(res.users);
+      createAlert(AlertType.Success, "Updated JSON");
+    } else {
+      createAlert(AlertType.Error, "Failed to update JSON");
     }
   };
   useEffect(() => {
     getData();
   }, []);
   return (
-    <Container>
+    <div className="p-5">
       <h1>Admin Settings Page</h1>
-      {settingsJSON ? (
-        <Editor value={settingsJSON} onChange={setSettingsJSON} />
-      ) : null}
-      <Button onClick={updateData}> Save Settings </Button>
-      <ReactTable data={data} columns={columns} />
-    </Container>
+      <br/>
+      <Row>
+        <Col lg="12" xl="6">
+          <Card>
+            <CardBody>
+              <CardTitle>
+                <h2>JSON Settings</h2>
+              </CardTitle>
+              <p>
+                <Button onClick={updateData}> Save JSON Settings </Button>
+              </p>
+              {settingsJSON ? (
+                <Editor value={settingsJSON} onChange={setSettingsJSON} />
+              ) : null}
+            </CardBody>
+          </Card>
+        </Col>
+        <Col lg="12" xl="6">
+          <Card>
+            <CardBody>
+              <CardTitle>
+                <h2>Users</h2>
+              </CardTitle>
+              <Input />
+              <ReactTable data={data} columns={columns} />
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+    </div>
   );
 };
 
