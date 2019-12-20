@@ -19,12 +19,15 @@ import {
 } from "reactstrap";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import createAlert, { AlertType } from "./Alert";
+import { User } from "./Types";
 
 const AdminPage = () => {
   document.body.classList.add("white");
   const { getCredentials } = useLogin();
   const [settingsJSON, setSettingsJSON] = useState(null);
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
   const promote = async (userID: string, type: string, value: boolean) => {
     const res = await ServerHelper.post(ServerURL.promoteUser, {
       ...getCredentials(),
@@ -103,10 +106,26 @@ const AdminPage = () => {
   useEffect(() => {
     getData();
   }, []);
+  useEffect(() => {
+    if (searchValue.length === 0) {
+      setFilteredData(data);
+    } else {
+      const value = searchValue.toLowerCase();
+      // Searchable content
+      setFilteredData(
+        data.filter(
+          (obj: User) =>
+            obj.name.toLowerCase().includes(value) ||
+            obj.email.toLowerCase().includes(value) ||
+            obj.skills.toLowerCase().includes(value)
+        )
+      );
+    }
+  }, [searchValue, data]);
   return (
     <div className="p-5">
       <h1>Admin Settings Page</h1>
-      <br/>
+      <br />
       <Row>
         <Col lg="12" xl="6">
           <Card>
@@ -129,8 +148,12 @@ const AdminPage = () => {
               <CardTitle>
                 <h2>Users</h2>
               </CardTitle>
-              <Input />
-              <ReactTable data={data} columns={columns} />
+              <Input
+                placeholder="search"
+                value={searchValue}
+                onChange={e=>setSearchValue(e.target.value)}
+              />
+              <ReactTable data={filteredData} columns={columns} />
             </CardBody>
           </Card>
         </Col>
