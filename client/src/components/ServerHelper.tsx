@@ -4,6 +4,7 @@ export enum ServerURL {
   unclaimTicket = "/api/v1/ticket/unclaim",
   closeTicket = "/api/v1/ticket/close",
   cancelTicket = "/api/v1/ticket/cancel",
+  rateTicket = "/api/v1/ticket/rate",
   userTicket = "/api/v1/user/ticket",
   userTickets = "/api/v1/user/tickets",
   userUpdate = "/api/v1/user/update",
@@ -12,6 +13,7 @@ export enum ServerURL {
   admin = "/api/v1/admin/settings",
   updateAdmin = "/api/v1/admin/update",
   promoteUser = "/api/v1/admin/promote",
+  resetEverything = "/api/v1/admin/reset"
 }
 
 const ServerHelper = {

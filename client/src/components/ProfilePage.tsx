@@ -6,7 +6,10 @@ import {
   Label,
   CardBody,
   CardTitle,
-  Card
+  Card,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText
 } from "reactstrap";
 import useLogin from "../hooks/useLogin";
 import { User } from "./Types";
@@ -29,13 +32,13 @@ const ProfilePage = () => {
     const res = await ServerHelper.post(ServerURL.userTicket, getCredentials());
     if (res.success) {
       setUser(res.user);
-      setName(res.user.name);
+      setName(res.user.name || "");
     } else {
       setUser(null);
       createAlert(AlertType.Error, "Failed to get user, are you logged in?");
     }
   };
-  const saveProfile = async (shouldRedirect:boolean) => {
+  const saveProfile = async (shouldRedirect: boolean) => {
     if (name.length === 0) {
       createAlert(AlertType.Error, "Name must be nonempty");
       return;
@@ -54,9 +57,9 @@ const ProfilePage = () => {
       createAlert(AlertType.Error, "Failed to update profile");
     }
     if (shouldRedirect) {
-      window.location.href="/";
+      window.location.href = "/";
     }
-  }
+  };
 
   useEffect(() => {
     getUser();
@@ -89,11 +92,13 @@ const ProfilePage = () => {
           <CardTitle>
             <h2> Profile </h2>
           </CardTitle>
-          <Input value={user.email} readOnly />
-          <Label>
-            Name:
+          <InputGroup>
+            <InputGroupAddon addonType="prepend">
+              <InputGroupText>Full Name:</InputGroupText>
+            </InputGroupAddon>
             <Input value={name} onChange={e => setName(e.target.value)} />
-          </Label>
+            <Input value={`(${user.email})`} readOnly className="text-center"/>
+          </InputGroup>
           <br />
           {user.mentor_is ? (
             <>
@@ -107,9 +112,12 @@ const ProfilePage = () => {
             </>
           ) : null}
           <Button onClick={() => saveProfile(false)}>Save Profile</Button>
-          <Button color="primary" onClick={()=>{
-            saveProfile(true);
-          }}>
+          <Button
+            color="primary"
+            onClick={() => {
+              saveProfile(true);
+            }}
+          >
             Go to Queue!
           </Button>
         </CardBody>

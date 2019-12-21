@@ -28,4 +28,5 @@ export type ClientSettings = {
   queue_status: string;
   queue_message: string;
   readonly_master_url: string;
+  mentor_password_key: string;
 }

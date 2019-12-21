@@ -23,6 +23,8 @@ class HelloWorld(Resource):
 # Blueprint for /api/v1 requests
 api = Api(Blueprint('api', __name__))
 
+# Update in ServerHelper.tsx
+
 # Endpoint registration
 api.add_resource(HelloWorld, '')  # This would be the default hostname/api/v1
 api.add_resource(api_tickets.TicketCreate, '/ticket/create')
@@ -30,6 +32,7 @@ api.add_resource(api_tickets.TicketClaim, '/ticket/claim')
 api.add_resource(api_tickets.TicketUnclaim, '/ticket/unclaim')
 api.add_resource(api_tickets.TicketClose, '/ticket/close')
 api.add_resource(api_tickets.TicketCancel, '/ticket/cancel')
+api.add_resource(api_tickets.TicketRate, '/ticket/rate')
 
 api.add_resource(api_user.UserRetrieveUser, '/user/ticket')
 api.add_resource(api_user.UserRetrieveAdmin, '/user/tickets')
@@ -38,6 +41,7 @@ api.add_resource(api_user.UserProfileUpdate, '/user/update')
 api.add_resource(api_admin.AdminPromote, '/admin/promote')
 api.add_resource(api_admin.AdminUpdate, '/admin/update')
 api.add_resource(api_admin.AdminGetSettings, '/admin/settings')
+api.add_resource(api_admin.AdminReset, '/admin/reset')
 
 # Login
 api.add_resource(api_login.ClientLogin, '/client/login')

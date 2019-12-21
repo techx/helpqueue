@@ -16,10 +16,10 @@ class TicketCreate(Resource):
 
     @require_login(CREATE_PARSER)
     def post(self, data, user):
-      ticket = create_ticket(user, data['data'])
-      if (ticket is None):
-        return return_failure("could not create ticket")
-      return return_success({'ticket':ticket.json()})
+        ticket = create_ticket(user, data['data'])
+        if (ticket is None):
+            return return_failure("could not create ticket")
+        return return_success({'ticket': ticket.json()})
 
 
 TICKET_PARSER = reqparse.RequestParser(bundle_errors=True)
@@ -27,18 +27,20 @@ TICKET_PARSER.add_argument('ticket_id',
                            help='Need ticket',
                            required=True)
 
+
 class TicketClaim(Resource):
     def get(self):
         return return_failure("Please use post requests")
 
     @require_login(TICKET_PARSER)
     def post(self, data, user):
-      ticket = get_ticket(data["ticket_id"])
-      if ticket is None:
-        return return_failure("ticket not found")
-      if claim_ticket(user, ticket):
-        return return_success({'ticket':ticket.json()})
-      return return_failure("could not claim ticket")
+        ticket = get_ticket(data["ticket_id"])
+        if ticket is None:
+            return return_failure("ticket not found")
+        if claim_ticket(user, ticket):
+            return return_success({'ticket': ticket.json()})
+        return return_failure("could not claim ticket")
+
 
 class TicketUnclaim(Resource):
     def get(self):
@@ -46,12 +48,12 @@ class TicketUnclaim(Resource):
 
     @require_login(TICKET_PARSER)
     def post(self, data, user):
-      ticket = get_ticket(data["ticket_id"])
-      if ticket is None:
-        return return_failure("ticket not found")
-      if unclaim_ticket(user, ticket):
-        return return_success({'ticket':ticket.json()})
-      return return_failure("could not unclaim ticket")
+        ticket = get_ticket(data["ticket_id"])
+        if ticket is None:
+            return return_failure("ticket not found")
+        if unclaim_ticket(user, ticket):
+            return return_success({'ticket': ticket.json()})
+        return return_failure("could not unclaim ticket")
 
 
 class TicketClose(Resource):
@@ -60,12 +62,13 @@ class TicketClose(Resource):
 
     @require_login(TICKET_PARSER)
     def post(self, data, user):
-      ticket = get_ticket(data["ticket_id"])
-      if ticket is None:
-        return return_failure("ticket not found")
-      if close_ticket(user, ticket):
-        return return_success({'ticket':ticket.json()})
-      return return_failure("could not close ticket")
+        ticket = get_ticket(data["ticket_id"])
+        if ticket is None:
+            return return_failure("ticket not found")
+        if close_ticket(user, ticket):
+            return return_success({'ticket': ticket.json()})
+        return return_failure("could not close ticket")
+
 
 class TicketCancel(Resource):
     def get(self):
@@ -73,9 +76,32 @@ class TicketCancel(Resource):
 
     @require_login(TICKET_PARSER)
     def post(self, data, user):
-      ticket = get_ticket(data["ticket_id"])
-      if ticket is None:
-        return return_failure("ticket not found")
-      if cancel_ticket(user, ticket):
-        return return_success({'ticket':ticket.json()})
-      return return_failure("could not cancel ticket")
+        ticket = get_ticket(data["ticket_id"])
+        if ticket is None:
+            return return_failure("ticket not found")
+        if cancel_ticket(user, ticket):
+            return return_success({'ticket': ticket.json()})
+        return return_failure("could not cancel ticket")
+
+
+TICKET_RATE_PARSER = reqparse.RequestParser(bundle_errors=True)
+TICKET_RATE_PARSER.add_argument('ticket_id',
+                                help='Need ticket',
+                                required=True)
+TICKET_RATE_PARSER.add_argument('rating',
+                                help='Need to assign rating',
+                                required=True)
+
+
+class TicketRate(Resource):
+    def get(self):
+        return return_failure("Please use post requests")
+
+    @require_login(TICKET_RATE_PARSER)
+    def post(self, data, user):
+        ticket = get_ticket(data["ticket_id"])
+        if ticket is None:
+            return return_failure("ticket not found")
+        if rate_ticket(user, ticket, data["rating"]):
+            return return_success({'ticket': ticket.json()})
+        return return_failure("could not cancel ticket")

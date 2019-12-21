@@ -11,6 +11,20 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+footer p {
+  color: #333;
+  font-size: 12px;
+}
+
+footer a {
+  color: #333;
+}
+
+footer a:hover {
+  color: #999;
+  text-decoration: none;
+}
+
 body.white {
   background-color: white;
 }

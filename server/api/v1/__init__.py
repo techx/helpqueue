@@ -1,7 +1,6 @@
 from functools import wraps
 from server.controllers.authentication import authenticate
 
-
 def add_token(parser):
     """
     Adds the requirement for the parser to require tokens

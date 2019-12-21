@@ -29,6 +29,9 @@ const QueueMentor = () => {
       setTickets(res.tickets);
       setTicket(res.ticket);
       setQueueLength(res.queue_length);
+      if (!res.user.mentor_is) {
+        createAlert(AlertType.Error, "You are not registered as a mentor! Ask your admin to whitelist you");
+      }
     } else {
       setTickets(null);
     }
@@ -37,7 +40,7 @@ const QueueMentor = () => {
     // On load check to see what the status is of the ticket
     getTickets();
 
-    const interval = setInterval(getTickets, 3000);
+    const interval = setInterval(getTickets, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -81,13 +84,13 @@ const QueueMentor = () => {
     // Ticket has been claimed
     queueCard = (
       <>
-        <p>You have claimed: {ticket.requested_by} </p>
+        <p><b>You have claimed:</b> {ticket.requested_by} </p>
         <p>
-          Question: {ticket.data.question}
+          <b>Question:</b> {ticket.data.question}
           <br />
-          Location: {ticket.data.location}
+          <b>Location:</b> {ticket.data.location}
           <br />
-          Contact: {ticket.data.contact}
+          <b>Contact:</b> {ticket.data.contact}
         </p>
         <Button
           onClick={async () => {
@@ -132,7 +135,7 @@ const QueueMentor = () => {
           <CardTitle>
             <h2>Mentor Queue</h2>
           </CardTitle>
-          Queue length: {queueLength}
+          <p>Queue length: {queueLength}</p>
           {queueCard}
         </CardBody>
       </Card>

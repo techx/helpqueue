@@ -1,6 +1,6 @@
 {
-  "name": "techx-react-flask-template",
-  "version": "0.1.0",
+  "name": "helplifo",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "concurrently": "^4.1.1",

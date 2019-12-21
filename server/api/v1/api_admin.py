@@ -22,6 +22,19 @@ class AdminGetSettings(Resource):
             'users': [u.json() for u in users]
         })
 
+
+class AdminReset(Resource):
+    def get(self):
+        return return_failure("Please use post requests")
+
+    @require_login(GET_PARSER)
+    def post(self, data, user):
+        if (not user.admin_is):
+            return return_failure("no admin privileges")
+        delete_users_and_tickets(user)
+        return return_success({})
+
+
 UPDATE_PARSER = reqparse.RequestParser(bundle_errors=True)
 UPDATE_PARSER.add_argument('data', help='data required', required=True)
 
