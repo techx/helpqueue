@@ -9,13 +9,13 @@ app = Flask(__name__, static_folder='build')
 env = DotEnv(app)
 env.init_app(app, env_file="./.env", verbose_mode=True)
 
-# Database (uncomment if needed)
-db = SQLAlchemy(app)
-
 # For heroku launching
 if "DATABASE_URL" in os.environ:
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Database (uncomment if needed)
+db = SQLAlchemy(app)
 
 if app.config["DEBUG"]:
     app.debug = True

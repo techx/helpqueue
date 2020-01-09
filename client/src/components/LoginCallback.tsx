@@ -44,11 +44,11 @@ const LoginCallback = (props: RouteComponentProps) => {
   }, [isLoggedIn, loginStatus]);
 
   if (loginStatus === Status.start || loginStatus === Status.loading) {
-    return <div>Attempting to login</div>;
+    return <div><p style={{color: "white"}}>Attempting to login</p></div>;
   } else if (loginStatus === Status.succeed) {
-    return <div>Successful Login</div>;
+    return <div><p style={{color: "white"}}>Successful Login</p></div>;
   } else {
-    return <div>Login Failed</div>;
+    return <div><p style={{color: "white"}}>Login Failed</p></div>;
   }
 };
 

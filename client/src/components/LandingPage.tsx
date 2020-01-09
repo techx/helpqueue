@@ -38,7 +38,7 @@ const LandingPage = (props: RouteComponentProps) => {
           <h4>Login:</h4>
           <Row>
             {isMentor ? (
-              <InputGroup>
+              <InputGroup className="my-2">
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>Mentor Key:</InputGroupText>
                 </InputGroupAddon>
@@ -50,7 +50,7 @@ const LandingPage = (props: RouteComponentProps) => {
             ) : null}
           </Row>
 
-          <Row>
+          <Row className="row justify-content-around">
             <Button onClick={() => setIsMentor(m => !m)} className="col-6">
               {isMentor ? "I am a student" : "I am a mentor"}
             </Button>

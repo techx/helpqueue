@@ -82,7 +82,7 @@ const ProfilePage = () => {
   }
 
   if (!user) {
-    return <p>Loading user...</p>;
+    return <div><p style={{color: "white"}}>Loading user...</p></div>;
   }
 
   return (

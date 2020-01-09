@@ -113,7 +113,7 @@ const QueueRequest = () => {
           />
         </Label>
         <br />
-        <InputGroup>
+        <InputGroup className="my-2">
           <InputGroupAddon addonType="prepend">
             <InputGroupText>you can find me at</InputGroupText>
           </InputGroupAddon>
