@@ -13,12 +13,15 @@ class Client(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="clients")
 
-    uid = Column(String)
+    uid = Column(String, unique=True)
     token = Column(String)
 
     date_created = Column(DateTime, default=datetime.datetime.now)
 
     def __init__(self, user):
         self.user = user
-        self.uid = secrets.token_hex(32)
+        self.generate_uniques()
         self.token = secrets.token_hex(32)
+
+    def generate_uniques(self):
+        self.uid = secrets.token_hex(32)

@@ -2,6 +2,7 @@ from server.controllers.dopeauth import authenticate_with_dopeauth
 from server.app import db
 from server.models.user import User
 from server.models.client import Client
+from server.models import add_to_db
 
 
 def authenticate_firsttime(email, uid, token):
@@ -15,11 +16,9 @@ def authenticate_firsttime(email, uid, token):
         user = User.query.filter_by(email=email).first()
         if user is None:
             user = User(None, email)
-            db.session.add(user)
         client = Client(user)
-        db.session.add(client)
-        db.session.commit()
-        return client
+        if (add_to_db(client, others=[user], rollbackfunc=lambda:client.generate_uniques())):
+                return client
     return None
 
 
