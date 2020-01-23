@@ -13,6 +13,13 @@ def remove_from_db(objs):
     for obj in objs:
         db.session.delete(obj)
     db.session.commit()
+
+def update_db():
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
+
 def add_to_db(obj, others=None,rollbackfunc=None):
     """Adds objects to database
     
