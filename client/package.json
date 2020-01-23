@@ -37,6 +37,7 @@
     "react-table-6": "^6.11.0",
     "react-tagsinput": "^3.19.0",
     "reactstrap": "^8.0.1",
+    "semantic-ui-react": "^0.88.2",
     "styled-components": "^4.4.1",
     "typescript": "3.5.3"
   },

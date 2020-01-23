@@ -7,16 +7,12 @@ import {
   Button,
   Input,
   Card,
-  CardBody,
-  CardTitle,
+  Form,
   Label,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Row,
-  Col,
-  Alert
-} from "reactstrap";
+  Message,
+  TextArea
+} from "semantic-ui-react";
+import { Row, Col } from "reactstrap";
 import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import useViewer from "../hooks/useViewer";
@@ -47,7 +43,11 @@ const QueueRequest = () => {
     } else {
       setTicket(null);
       if (isLoggedIn) {
-        if(window.confirm("Your credentials appear to be invalid... Do you want to log out and try again?")) {
+        if (
+          window.confirm(
+            "Your credentials appear to be invalid... Do you want to log out and try again?"
+          )
+        ) {
           logout();
         }
       }
@@ -100,39 +100,35 @@ const QueueRequest = () => {
   if (ticket == null) {
     queueCard = (
       <>
-        <CardTitle>
-          <h2>How can we help you?</h2>
-        </CardTitle>
-        <Label style={{ display: "block" }}>
-          What's your problem?
-          <Input
-            type="textarea"
-            placeholder="describe your problem"
-            value={cTicketQuestion}
-            onChange={e => setCTicketQuestion(e.target.value)}
-          />
-        </Label>
+        <h2>How can we help you?</h2>
         <br />
-        <InputGroup className="my-2">
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>you can find me at</InputGroupText>
-          </InputGroupAddon>
-          <Input
-            placeholder="where are you?"
-            value={cTicketLocation}
-            onChange={e => setCTicketLocation(e.target.value)}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>you can reach me at</InputGroupText>
-          </InputGroupAddon>
-          <Input
-            placeholder="additional contact info i.e. cell/email"
-            value={cTicketContact}
-            onChange={e => setCTicketContact(e.target.value)}
-          />
-        </InputGroup>
+        <Form>
+          <Form.Field>
+            <label>What's your problem?</label>
+            <TextArea
+              placeholder="describe your problem"
+              value={cTicketQuestion}
+              onChange={e => setCTicketQuestion(e.currentTarget.value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Input
+              placeholder="where are you?"
+              label="Find me at:"
+              value={cTicketLocation}
+              onChange={e => setCTicketLocation(e.target.value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Input
+              label="Reach me at:"
+              placeholder="additiona  l contact info i.e. cell/email"
+              value={cTicketContact}
+              onChange={e => setCTicketContact(e.target.value)}
+            />
+          </Form.Field>
+        </Form>
+
         <br />
         <Button
           onClick={async () => {
@@ -161,7 +157,7 @@ const QueueRequest = () => {
               setCTicketQuestion("");
             }
           }}
-          color="primary"
+          color="blue"
           className="col-12"
         >
           Create Ticket
@@ -172,9 +168,7 @@ const QueueRequest = () => {
     // Unclaimed
     queueCard = (
       <>
-        <CardTitle>
-          <h2>Waiting for Mentor...</h2>
-        </CardTitle>
+        <h2>Waiting for Mentor...</h2>
         <p>
           <b>Position in Queue:</b> {queueLength}
           <br />
@@ -190,7 +184,7 @@ const QueueRequest = () => {
           <br />
           <b>Contact:</b> {ticket.data.contact}
         </p>
-        <Button onClick={cancelTicket} className="col-12" color="danger">
+        <Button onClick={cancelTicket} className="col-12" color="red">
           Cancel Ticket
         </Button>
       </>
@@ -199,11 +193,11 @@ const QueueRequest = () => {
     // Claimed
     queueCard = (
       <>
-        <CardTitle>
-          <h2>You have been claimed!</h2>
-        </CardTitle>
-        <p><b>Claimed by:</b> {ticket.claimed_by} </p>
-        <Button onClick={cancelTicket} className="col-12" color="danger">
+        <h2>You have been claimed!</h2>
+        <p>
+          <b>Claimed by:</b> {ticket.claimed_by}{" "}
+        </p>
+        <Button onClick={cancelTicket} className="col-12" color="red">
           Cancel Ticket
         </Button>
       </>
@@ -213,14 +207,16 @@ const QueueRequest = () => {
     queueCard = (
       <>
         <p> The ticket has been closed. </p>
-        <p> Please rate your mentor (<b>{ticket.claimed_by}</b>)!</p>
+        <p>
+          Please rate your mentor (<b>{ticket.claimed_by}</b>)!
+        </p>
         <Rate
           defaultValue={0}
           onChange={setCTicketRating}
           style={{ fontSize: 40 }}
           allowClear={true}
         />
-        <Button onClick={rateTicket} className="col-12 mt-5" color="success">
+        <Button onClick={rateTicket} className="col-12 mt-5" color="green">
           {cTicketRating == 0 ? (
             "Close Ticket"
           ) : (
@@ -239,54 +235,50 @@ const QueueRequest = () => {
       {settings && settings.queue_message.length > 0 ? (
         <Row>
           <Col sm="12">
-            <Alert color="secondary">{settings.queue_message}</Alert>
+            <Message>{settings.queue_message}</Message>
           </Col>
         </Row>
       ) : null}
       <Row>
         <Col lg={rankings.length > 0 ? "8" : "12"}>
           <Card>
-            <CardBody>
+            <div>
               {user && user.admin_is ? (
-                <Button href="/admin" color="info" className="col-6 mb-5">
+                <Button href="/admin" color="teal" className="my-2">
                   Admin Page
                 </Button>
               ) : null}
               {user && user.mentor_is ? (
-                <Button href="/m" color="success" className="col-6 mb-5">
+                <Button href="/m" color="green" className="my-2">
                   Mentor Queue
                 </Button>
               ) : null}
               {settings && settings.queue_status == "true"
                 ? queueCard
                 : "The queue is currently closed"}
-            </CardBody>
+            </div>
           </Card>
         </Col>
         {rankings.length > 0 ? (
           <Col lg="4">
             <Card>
-              <CardBody>
-                <CardTitle>
-                  <h3>Mentor Leaderboard</h3>
-                </CardTitle>
-                <ol>
-                  {rankings.map(
-                    (
-                      r: { name: string; rating: string; tickets: string },
-                      ind
-                    ) => {
-                      return (
-                        <li key={r.name}>
-                          {r.name} - {r.rating}{" "}
-                          <FontAwesomeIcon icon={faStar} color="gold" /> (
-                          {r.tickets} {r.tickets == "1" ? "ticket" : "tickets"})
-                        </li>
-                      );
-                    }
-                  )}
-                </ol>
-              </CardBody>
+              <h2>Mentor Leaderboard</h2>
+              <ol>
+                {rankings.map(
+                  (
+                    r: { name: string; rating: string; tickets: string },
+                    ind
+                  ) => {
+                    return (
+                      <li key={r.name}>
+                        {r.name} - {r.rating}{" "}
+                        <FontAwesomeIcon icon={faStar} color="gold" /> (
+                        {r.tickets} {r.tickets == "1" ? "ticket" : "tickets"})
+                      </li>
+                    );
+                  }
+                )}
+              </ol>
             </Card>
           </Col>
         ) : null}

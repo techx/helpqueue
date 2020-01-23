@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Button,
-  Input,
-  Label,
-  CardBody,
-  CardTitle,
-  Card,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText
-} from "reactstrap";
+import { Container, Button, Input, Label, Card, Form } from "semantic-ui-react";
 import useLogin from "../hooks/useLogin";
 import { User } from "./Types";
 import ServerHelper, { ServerURL } from "./ServerHelper";
@@ -82,45 +71,51 @@ const ProfilePage = () => {
   }
 
   if (!user) {
-    return <div><p style={{color: "white"}}>Loading user...</p></div>;
+    return (
+      <div>
+        <p style={{ color: "white" }}>Loading user...</p>
+      </div>
+    );
   }
 
   return (
     <Container>
       <Card>
-        <CardBody>
-          <CardTitle>
-            <h2> Profile </h2>
-          </CardTitle>
-          <InputGroup>
-            <InputGroupAddon addonType="prepend">
-              <InputGroupText>Full Name:</InputGroupText>
-            </InputGroupAddon>
-            <Input value={name} onChange={e => setName(e.target.value)} />
-            <Input value={`(${user.email})`} readOnly className="text-center"/>
-          </InputGroup>
-          <br />
-          {user.mentor_is ? (
-            <>
-              <Label>
-                Technical skills (i.e. javascript, java...):
-                <TagsInput value={skills} onChange={e => setSkills(e)} />
-              </Label>
-              <p>
-                You are an mentor! <a href="/m">Go to mentor queue!</a>
-              </p>
-            </>
-          ) : null}
-          <Button onClick={() => saveProfile(false)}>Save Profile</Button>
-          <Button
-            color="primary"
-            onClick={() => {
-              saveProfile(true);
-            }}
-          >
-            Go to Queue!
-          </Button>
-        </CardBody>
+        <h2> Profile </h2>
+        <Form>
+          <Form.Field>
+        <Input
+          label="Full Name:"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        /></Form.Field>
+        <Form.Field>
+        <Input disabled label="Email:" value={user.email} readOnly className="text-center" />
+        </Form.Field>
+        </Form>
+        <br />
+        {user.mentor_is ? (
+          <>
+            <Label>
+              Technical skills (i.e. javascript, java...):
+              <TagsInput value={skills} onChange={e => setSkills(e)} />
+            </Label>
+            <p>
+              You are an mentor! <a href="/m">Go to mentor queue!</a>
+            </p>
+          </>
+        ) : null}
+        <div>
+        <Button onClick={() => saveProfile(false)}>Save Profile</Button>
+        <Button
+          color="blue"
+          onClick={() => {
+            saveProfile(true);
+          }}
+        >
+          Go to Queue!
+        </Button>
+        </div>
       </Card>
     </Container>
   );

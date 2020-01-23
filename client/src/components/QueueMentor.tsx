@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Button,
-  Input,
-  Card,
-  CardBody,
-  CardTitle,
-  CardFooter,
-  CardText
-} from "reactstrap";
+import { Container, Button, Card } from "semantic-ui-react";
 import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import { Ticket } from "./Types";
@@ -30,7 +21,10 @@ const QueueMentor = () => {
       setTicket(res.ticket);
       setQueueLength(res.queue_length);
       if (!res.user.mentor_is) {
-        createAlert(AlertType.Error, "You are not registered as a mentor! Ask your admin to whitelist you");
+        createAlert(
+          AlertType.Error,
+          "You are not registered as a mentor! Ask your admin to whitelist you"
+        );
       }
     } else {
       setTickets(null);
@@ -53,29 +47,28 @@ const QueueMentor = () => {
       queueCard = tickets.map(ticket => {
         return (
           <Card key={ticket.id} className="my-2">
-            <CardBody>
-              <CardTitle>
-                {ticket.requested_by} <b>asked</b> {ticket.minutes} <b>mins ago</b>:
-              </CardTitle>
-              <CardText>{ticket.data.question}</CardText>
-                <Button
-                  onClick={async () => {
-                    const res = await ServerHelper.post(ServerURL.claimTicket, {
-                      ...getCredentials(),
-                      ticket_id: ticket.id
-                    });
-                    if (res.success) {
-                      setTicket(res.ticket);
-                      createAlert(AlertType.Success, "Claimed ticket");
-                    }
-                  }}
-                  className="col-12"
-                  outline
-                  color="success"
-                >
-                  Claim <b>@ the location of</b> {ticket.data.location}
-                </Button>
-            </CardBody>
+            <p>
+              {ticket.requested_by} <b>asked</b> {ticket.minutes}{" "}
+              <b>mins ago</b>:
+            </p>
+            <p>{ticket.data.question}</p>
+            <Button
+              onClick={async () => {
+                const res = await ServerHelper.post(ServerURL.claimTicket, {
+                  ...getCredentials(),
+                  ticket_id: ticket.id
+                });
+                if (res.success) {
+                  setTicket(res.ticket);
+                  createAlert(AlertType.Success, "Claimed ticket");
+                }
+              }}
+              className="col-12"
+              basic
+              color="green"
+            >
+              Claim <b>@ the location of</b> {ticket.data.location}
+            </Button>
           </Card>
         );
       });
@@ -84,7 +77,9 @@ const QueueMentor = () => {
     // Ticket has been claimed
     queueCard = (
       <>
-        <p><b>You have claimed:</b> {ticket.requested_by} </p>
+        <p>
+          <b>You have claimed:</b> {ticket.requested_by}{" "}
+        </p>
         <p>
           <b>Question:</b> {ticket.data.question}
           <br />
@@ -92,52 +87,48 @@ const QueueMentor = () => {
           <br />
           <b>Contact:</b> {ticket.data.contact}
         </p>
-        <Button
-          onClick={async () => {
-            const res = await ServerHelper.post(ServerURL.closeTicket, {
-              ...getCredentials(),
-              ticket_id: ticket.id
-            });
-            if (res.success) {
-              setTicket(null);
-              getTickets();
-              createAlert(AlertType.Success, "Closed ticket");
-            }
-          }}
-          className="col-6"
-          color="success"
-        >
-          Close Ticket
-        </Button>
-        <Button
-          onClick={async () => {
-            const res = await ServerHelper.post(ServerURL.unclaimTicket, {
-              ...getCredentials(),
-              ticket_id: ticket.id
-            });
-            if (res.success) {
-              getTickets();
-              createAlert(AlertType.Success, "Unclaimed ticket");
-            }
-          }}
-          className="col-6"
-          outline
-        >
-          Unclaim
-        </Button>
+        <div>
+          <Button
+            onClick={async () => {
+              const res = await ServerHelper.post(ServerURL.closeTicket, {
+                ...getCredentials(),
+                ticket_id: ticket.id
+              });
+              if (res.success) {
+                setTicket(null);
+                getTickets();
+                createAlert(AlertType.Success, "Closed ticket");
+              }
+            }}
+            color="green"
+          >
+            Close Ticket
+          </Button>
+          <Button
+            onClick={async () => {
+              const res = await ServerHelper.post(ServerURL.unclaimTicket, {
+                ...getCredentials(),
+                ticket_id: ticket.id
+              });
+              if (res.success) {
+                getTickets();
+                createAlert(AlertType.Success, "Unclaimed ticket");
+              }
+            }}
+            basic
+          >
+            Unclaim
+          </Button>
+        </div>
       </>
     );
   }
   return (
     <Container>
       <Card>
-        <CardBody>
-          <CardTitle>
-            <h2>Mentor Queue</h2>
-          </CardTitle>
-          <p>Queue length: {queueLength}</p>
-          {queueCard}
-        </CardBody>
+        <h2>Mentor Queue</h2>
+        <p>Queue length: {queueLength}</p>
+        {queueCard}
       </Card>
     </Container>
   );
