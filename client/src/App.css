@@ -2,6 +2,7 @@
   text-align: center;
 }
 
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
@@ -50,7 +51,7 @@
   margin-bottom: .1em;
   content:' ';
   display:block;
-  border:2px solid #007fd4;
+  border:2px solid #4682B4;
   border-radius:4px;
   -webkit-border-radius:4px;
   -moz-border-radius:4px;
@@ -65,8 +66,12 @@
 }
 
 .App .card .card .card-title:after {
-  border:0px solid #007fd4;
+  border:0px solid #4682B4;
 }
 .App .noshadow .card {
   box-shadow: 0;
+}
+
+.ui.label.label{
+  background-color: #FFD700
 }

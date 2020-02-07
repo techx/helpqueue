@@ -10,7 +10,8 @@ import {
   Form,
   Label,
   Message,
-  TextArea
+  TextArea,
+  Header
 } from "semantic-ui-react";
 import { Row, Col } from "reactstrap";
 import useLogin from "../hooks/useLogin";
@@ -96,22 +97,28 @@ const QueueRequest = () => {
     window.location.href = "/login";
     return null;
   }
+
   let queueCard = null;
   if (ticket == null) {
     queueCard = (
       <>
+        <div>
+          <Header as='h3'></Header>
+          <Header as='h1'>Welcome to the HelpQueue!</Header>
+          <Header as='h2'></Header>
+        </div>
         <h2>How can we help you?</h2>
         <br />
-        <Form>
-          <Form.Field>
-            <label>What's your problem?</label>
+        <Form size={'big'} key={'big'}>
+          <Form.Field required style={{backgroundColor: '#FFD700'}}>
+            <label>I need help with...</label>
             <TextArea
               placeholder="describe your problem"
               value={cTicketQuestion}
               onChange={e => setCTicketQuestion(e.currentTarget.value)}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field required>
             <Input
               placeholder="where are you?"
               label="Find me at:"
@@ -119,10 +126,11 @@ const QueueRequest = () => {
               onChange={e => setCTicketLocation(e.target.value)}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field style={{backgroundColor: '#FFD700'}}>
             <Input
+              class="ui yellow label"
               label="Reach me at:"
-              placeholder="additiona  l contact info i.e. cell/email"
+              placeholder="additional contact info i.e. cell/email"
               value={cTicketContact}
               onChange={e => setCTicketContact(e.target.value)}
             />
@@ -130,7 +138,7 @@ const QueueRequest = () => {
         </Form>
 
         <br />
-        <Button
+        <Button id="CreateTicket"
           onClick={async () => {
             if (cTicketQuestion.length === 0) {
               createAlert(AlertType.Warning, "You need to ask a question!");
@@ -174,7 +182,7 @@ const QueueRequest = () => {
           <br />
           <b>Posted:</b>{" "}
           {ticket.minutes < 3
-            ? "few minutes ago"
+            ? "a few minutes ago"
             : ticket.minutes + " minutes ago"}
         </p>
         <p>
@@ -241,15 +249,15 @@ const QueueRequest = () => {
       ) : null}
       <Row>
         <Col lg={rankings.length > 0 ? "8" : "12"}>
-          <Card>
+          <Card color='orange'>
             <div>
               {user && user.admin_is ? (
-                <Button href="/admin" color="teal" className="my-2">
+                <Button id="AdminPage" href="/admin" color="red" className="my-2">
                   Admin Page
                 </Button>
               ) : null}
               {user && user.mentor_is ? (
-                <Button href="/m" color="green" className="my-2">
+                <Button id="MentorButton" href="/m" className="my-2">
                   Mentor Queue
                 </Button>
               ) : null}

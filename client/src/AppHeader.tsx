@@ -58,7 +58,7 @@ const AppHeader: React.FC = () => {
   );
   return (
     <div>
-      <Navbar dark={!document.body.classList.contains("white")} expand="md">
+      <Navbar style={{backgroundColor: '#146FC1'}} dark={!document.body.classList.contains("white")} expand="md">
         <NavbarBrand href="/">
           {settings ? settings.app_name : null}
         </NavbarBrand>

@@ -7,7 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #007fd4;
+  background-color: #23243F;
   font-family: 'Lato', sans-serif;
 }
 
@@ -32,4 +32,19 @@ body.white {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#MentorButton{
+  background-color: #9600C0;
+  color: white;
+}
+
+#AdminPage{
+  background-color: #ec0e6a;
+  color: white;
+}
+
+#CreateTicket{
+  background-color: #146fc1;
+  color: white;
 }

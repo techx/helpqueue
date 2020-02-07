@@ -101,7 +101,7 @@ const ProfilePage = () => {
               <TagsInput value={skills} onChange={e => setSkills(e)} />
             </Label>
             <p>
-              You are an mentor! <a href="/m">Go to mentor queue!</a>
+              You are a mentor! <a href="/m">Go to mentor queue!</a>
             </p>
           </>
         ) : null}

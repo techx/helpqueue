@@ -105,6 +105,7 @@ const QueueMentor = () => {
             Close Ticket
           </Button>
           <Button
+            color='red'
             onClick={async () => {
               const res = await ServerHelper.post(ServerURL.unclaimTicket, {
                 ...getCredentials(),
