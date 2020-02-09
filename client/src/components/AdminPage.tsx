@@ -118,9 +118,9 @@ const AdminPage = () => {
       setFilteredData(
         data.filter(
           (obj: User) =>
-            obj.name.toLowerCase().includes(value) ||
-            obj.email.toLowerCase().includes(value) ||
-            obj.skills.toLowerCase().includes(value)
+            (obj.name && obj.name.toLowerCase().includes(value)) ||
+            (obj.email && obj.email.toLowerCase().includes(value)) ||
+            (obj.skills && obj.skills.toLowerCase().includes(value))
         )
       );
     }
