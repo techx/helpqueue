@@ -27,7 +27,7 @@ const ProfilePage = () => {
       createAlert(AlertType.Error, "Failed to get user, are you logged in?");
     }
   };
-  const saveProfile = async (shouldRedirect: boolean) => {
+  const saveProfile = async (shouldRedirect: string | null) => {
     if (name.length === 0) {
       createAlert(AlertType.Error, "Name must be nonempty");
       return;
@@ -46,7 +46,7 @@ const ProfilePage = () => {
       createAlert(AlertType.Error, "Failed to update profile");
     }
     if (shouldRedirect) {
-      window.location.href = "/";
+      window.location.href = shouldRedirect;
     }
   };
 
@@ -84,14 +84,21 @@ const ProfilePage = () => {
         <h2> Profile </h2>
         <Form>
           <Form.Field>
-        <Input
-          label="Full Name:"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        /></Form.Field>
-        <Form.Field>
-        <Input disabled label="Email:" value={user.email} readOnly className="text-center" />
-        </Form.Field>
+            <Input
+              label="Full Name:"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Input
+              disabled
+              label="Email:"
+              value={user.email}
+              readOnly
+              className="text-center"
+            />
+          </Form.Field>
         </Form>
         <br />
         {user.mentor_is ? (
@@ -100,21 +107,31 @@ const ProfilePage = () => {
               Technical skills (i.e. javascript, java...):
               <TagsInput value={skills} onChange={e => setSkills(e)} />
             </Label>
-            <p>
-              You are a mentor! <a href="/m">Go to mentor queue!</a>
-            </p>
           </>
         ) : null}
+        <br />
         <div>
-        <Button onClick={() => saveProfile(false)}>Save Profile</Button>
-        <Button
-          color="blue"
-          onClick={() => {
-            saveProfile(true);
-          }}
-        >
-          Go to Queue!
-        </Button>
+          <Button onClick={() => saveProfile(null)}>Save Profile</Button>
+          {!user.mentor_is || user.admin_is ? (
+            <Button
+              color="blue"
+              onClick={() => {
+                saveProfile("/");
+              }}
+            >
+              Go to Queue!
+            </Button>
+          ) : null}
+          {!user.mentor_is || user.admin_is ? (
+            <Button
+              color="blue"
+              onClick={() => {
+                saveProfile("/m");
+              }}
+            >
+              Go to Mentor Queue!
+            </Button>
+          ) : null}
         </div>
       </Card>
     </Container>

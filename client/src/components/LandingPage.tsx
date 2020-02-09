@@ -30,9 +30,11 @@ const LandingPage = (props: RouteComponentProps) => {
           />
         ) : null}
         <div>
-          <Button onClick={() => setIsMentor(m => !m)}>
-            {isMentor ? "I am a student" : "I am a mentor"}
-          </Button>
+          {isMentor ? null : (
+            <Button onClick={() => setIsMentor(m => !m)}>
+              Sign up as mentor
+            </Button>
+          )}
           <Button
             onClick={() => {
               const params: [string, string][] | undefined =
@@ -41,14 +43,20 @@ const LandingPage = (props: RouteComponentProps) => {
             }}
             color="blue"
           >
-            Login with email
+            Log in with email
           </Button>
-          {settings && settings.github_client_id ? 
-          <Button
-            href={"https://github.com/login/oauth/authorize?client_id=" + settings.github_client_id + "&scope=user:email"}
-            color="red">
-              Login with Github
-          </Button>: null}
+          {settings && settings.github_client_id ? (
+            <Button
+              href={
+                "https://github.com/login/oauth/authorize?client_id=" +
+                settings.github_client_id +
+                "&scope=user:email"
+              }
+              color="red"
+            >
+              Log in with Github
+            </Button>
+          ) : null}
         </div>
       </Card>
       <footer className="my-4">

@@ -10,7 +10,8 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Button
 } from "reactstrap";
 import useLogin from "./hooks/useLogin";
 import useViewer, { Query } from "./hooks/useViewer";
@@ -25,7 +26,7 @@ const AppHeader: React.FC = () => {
     ? cookies["settings"]
     : null;
   const { viewer, isLoggedIn } = useViewer();
-  const { logout, redirectToDopeAuth } = useLogin();
+  const { logout } = useLogin();
 
   const getSettings = async () => {
     const res = await ServerHelper.post(ServerURL.settings, {});
@@ -45,20 +46,22 @@ const AppHeader: React.FC = () => {
         Hello {viewer(Query.name)}
       </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem onClick={() => (window.location.href = "/profile")}>
-          Change your name!
+        <DropdownItem>
+          <a onClick={() => (window.location.href = "/profile")}>
+            Change your name!
+          </a>
         </DropdownItem>
         <DropdownItem onClick={logout}>Logout</DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
-  ) : (
-    <NavItem>
-      <NavLink onClick={()=>redirectToDopeAuth()}>Login with DopeAuth</NavLink>
-    </NavItem>
-  );
+  ) : null;
   return (
     <div>
-      <Navbar style={{backgroundColor: '#146FC1'}} dark={!document.body.classList.contains("white")} expand="md">
+      <Navbar
+        style={{ backgroundColor: "#146FC1" }}
+        dark={!document.body.classList.contains("white")}
+        expand="md"
+      >
         <NavbarBrand href="/">
           {settings ? settings.app_name : null}
         </NavbarBrand>

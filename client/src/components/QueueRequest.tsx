@@ -102,15 +102,13 @@ const QueueRequest = () => {
   if (ticket == null) {
     queueCard = (
       <>
-        <div>
-          <Header as='h3'></Header>
-          <Header as='h1'>Welcome to the HelpQueue!</Header>
-          <Header as='h2'></Header>
-        </div>
+        <br />
+        <Header as="h1">Welcome to the HelpQueue!</Header>
+        <br />
         <h2>How can we help you?</h2>
         <br />
-        <Form size={'big'} key={'big'}>
-          <Form.Field required style={{backgroundColor: '#FFD700'}}>
+        <Form size={"big"} key={"big"}>
+          <Form.Field required style={{ backgroundColor: "#FFD700" }}>
             <label>I need help with...</label>
             <TextArea
               placeholder="describe your problem"
@@ -126,7 +124,7 @@ const QueueRequest = () => {
               onChange={e => setCTicketLocation(e.target.value)}
             />
           </Form.Field>
-          <Form.Field style={{backgroundColor: '#FFD700'}}>
+          <Form.Field style={{ backgroundColor: "#FFD700" }}>
             <Input
               class="ui yellow label"
               label="Reach me at:"
@@ -138,7 +136,8 @@ const QueueRequest = () => {
         </Form>
 
         <br />
-        <Button id="CreateTicket"
+        <Button
+          id="CreateTicket"
           onClick={async () => {
             if (cTicketQuestion.length === 0) {
               createAlert(AlertType.Warning, "You need to ask a question!");
@@ -249,10 +248,15 @@ const QueueRequest = () => {
       ) : null}
       <Row>
         <Col lg={rankings.length > 0 ? "8" : "12"}>
-          <Card color='orange'>
+          <Card color="orange">
             <div>
               {user && user.admin_is ? (
-                <Button id="AdminPage" href="/admin" color="red" className="my-2">
+                <Button
+                  id="AdminPage"
+                  href="/admin"
+                  color="red"
+                  className="my-2"
+                >
                   Admin Page
                 </Button>
               ) : null}
