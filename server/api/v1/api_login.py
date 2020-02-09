@@ -1,6 +1,7 @@
 from urllib.parse import quote
 from flask_restful import Resource, reqparse
-from server.controllers.authentication import authenticate_firsttime
+from server.controllers.authentication import authenticate_firsttime, get_client
+from server.controllers.dopeauth import authenticate_with_github
 from server.controllers.users import set_name, set_admin, set_mentor
 from server.server_constants import *
 from server.controllers.settings import get_public_settings, get_setting
@@ -25,10 +26,17 @@ class ClientLogin(Resource):
         email = data['email']
         uid = data['uid']
         token = data['token']
-        client = authenticate_firsttime(email, uid, token)
-        if (client is None):
-            # Unauthenticated
-            return return_failure("login credentials invalid")
+        if email == "GITHUB" and uid == "GITHUB":
+            email = authenticate_with_github(token, get_setting(None, SETTING_GITHUB_CLIENT_ID, override=True), get_setting(None, SETTING_GITHUB_CLIENT_SECRET, override=True))
+            if email is None:
+                return return_failure("login credentials invalid")
+            client = get_client(email)
+        else:
+            client = authenticate_firsttime(email, uid, token)
+            if (client is None):
+                # Unauthenticated
+                return return_failure("login credentials invalid")
+
         if (not client.user.admin_is and client.user.email == get_setting(None, SETTING_MASTER_USER, override=True)):
             set_admin(None, client.user, True, override=True)
 

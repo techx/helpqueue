@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AppHeader from "./AppHeader";
 import LandingPage from "./components/LandingPage";
 import LoginCallback from "./components/LoginCallback";
+import LoginGithub from "./components/LoginGithub";
 import QueueRequest from "./components/QueueRequest";
 import QueueMentor from "./components/QueueMentor";
 import AdminPage from "./components/AdminPage";
@@ -25,6 +26,7 @@ const App: React.FC = () => {
             <AppHeader />
             <Switch>
               <Route exact path="/login/auth" component={LoginCallback} />
+              <Route exact path="/login/github" component={LoginGithub} />
               <Route path="/m" component={QueueMentor} />
               <Route path="/login" component={LandingPage} />
               <Route path="/profile" component={ProfilePage} />

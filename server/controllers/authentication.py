@@ -13,17 +13,21 @@ def authenticate_firsttime(email, uid, token):
     """
     # TODO(kevinfang): FALSE authentication should be TRUE unless in debug
     if(authenticate_with_dopeauth(email, uid, token, True)):
-        user = User.query.filter_by(email=email).first()
-        if user is None:
-            user = User(None, email)
-        else:
-            user.sign_in()
-        client = Client(user)
-        if (add_to_db(client, others=[user], rollbackfunc=lambda:client.generate_uniques())):
-                return client
+        return get_client(email)
     return None
 
+def get_client(email):
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        user = User(None, email)
+    else:
+        user.sign_in()
+    client = Client(user)
+    if (add_to_db(client, others=[user], rollbackfunc=lambda:client.generate_uniques())):
+        return client
+    return None
 
+    
 def authenticate(uid, token):
     """
     Authenticates with email and reddlinks token

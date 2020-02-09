@@ -14,7 +14,7 @@
     "gunicorn": "gunicorn run_server:app",
     "dev-server": "gunicorn -b 127.0.0.1:5000 --reload run_dev_server:app",
     "prod-server": "gunicorn -b 127.0.0.1:5000 --reload run_server:app",
-    "dev": "concurrently --kill-others \"yarn start\" \"npm run dev-server\"",
+    "dev": "concurrently -r -k \"yarn start  >/dev/null 2>/dev/null\" \"npm run dev-server\"",
     "prod": "concurrently --kill-others \"yarn start\" \"npm run prod-server\""
   }
 }

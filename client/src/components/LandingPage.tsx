@@ -43,6 +43,12 @@ const LandingPage = (props: RouteComponentProps) => {
           >
             Login with email
           </Button>
+          {settings && settings.github_client_id ? 
+          <Button
+            href={"https://github.com/login/oauth/authorize?client_id=" + settings.github_client_id + "&scope=user:email"}
+            color="red">
+              Login with Github
+          </Button>: null}
         </div>
       </Card>
       <footer className="my-4">

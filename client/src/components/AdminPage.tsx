@@ -177,6 +177,8 @@ const AdminPage = () => {
                 <li>app_creator (org running the program)</li>
                 <li>app_name (name of event)</li>
                 <li>app_contact_email (contact email for question)</li>
+                <li>github_client_id (client id for github)</li>
+                <li>github_client_secret (client secret for github)</li>
               </ul>
 
               <Button
