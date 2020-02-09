@@ -29,9 +29,13 @@ def mentor_rankings():
                 totalRatings += 1
             else:
                 totalUnrated += 1
+        unrated_tickets = Ticket.query.filter_by(claimant=user, status=3).all()
+        totalUnrated += len(unrated_tickets)
+
         if (totalRatings > 0):
             ret.append({"name": user.name, "rating": "{:.1f}".format(
                 totalRating/totalRatings), "tickets": totalRatings + totalUnrated, "smooth_rating": laplaceSmooth(totalRating, totalRatings)})
+    
     return sorted(ret, key=(lambda x: -x["smooth_rating"]))
 
 def get_all_users(user, override=False):

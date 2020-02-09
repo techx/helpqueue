@@ -4,10 +4,14 @@ import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import { Ticket } from "./Types";
 import createAlert, { AlertType } from "./Alert";
+import { Row, Col } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const QueueMentor = () => {
   const { getCredentials } = useLogin();
   const [tickets, setTickets] = useState<Ticket[] | null>(null);
+  const [rankings, setRankings] = useState([]);
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [queueLength, setQueueLength] = useState(0);
 
@@ -18,6 +22,7 @@ const QueueMentor = () => {
     );
     if (res.success) {
       setTickets(res.tickets);
+      setRankings(res.rankings);
       setTicket(res.ticket);
       setQueueLength(res.queue_length);
       if (!res.user.mentor_is) {
@@ -105,7 +110,7 @@ const QueueMentor = () => {
             Close Ticket
           </Button>
           <Button
-            color='red'
+            color="red"
             onClick={async () => {
               const res = await ServerHelper.post(ServerURL.unclaimTicket, {
                 ...getCredentials(),
@@ -126,11 +131,38 @@ const QueueMentor = () => {
   }
   return (
     <Container>
-      <Card>
-        <h2>Mentor Queue</h2>
-        <p>Queue length: {queueLength}</p>
-        {queueCard}
-      </Card>
+      <Row>
+        <Col lg={rankings.length > 0 ? "8" : "12"}>
+          <Card>
+            <h2>Mentor Queue</h2>
+            <p>Queue length: {queueLength}</p>
+            {queueCard}
+          </Card>
+        </Col>
+        {rankings.length > 0 ? (
+          <Col lg="4">
+            <Card>
+              <h2>Mentor Leaderboard</h2>
+              <ol>
+                {rankings.map(
+                  (
+                    r: { name: string; rating: string; tickets: string },
+                    ind
+                  ) => {
+                    return (
+                      <li key={r.name}>
+                        {r.name} - {r.rating}{" "}
+                        <FontAwesomeIcon icon={faStar} color="gold" /> (
+                        {r.tickets} {r.tickets == "1" ? "ticket" : "tickets"})
+                      </li>
+                    );
+                  }
+                )}
+              </ol>
+            </Card>
+          </Col>
+        ) : null}
+      </Row>
     </Container>
   );
 };

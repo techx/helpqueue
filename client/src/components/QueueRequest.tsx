@@ -11,7 +11,8 @@ import {
   Label,
   Message,
   TextArea,
-  Header
+  Header,
+  MessageHeader
 } from "semantic-ui-react";
 import { Row, Col } from "reactstrap";
 import useLogin from "../hooks/useLogin";
@@ -19,8 +20,6 @@ import ServerHelper, { ServerURL } from "./ServerHelper";
 import useViewer from "../hooks/useViewer";
 import { Ticket, User } from "./Types";
 import createAlert, { AlertType } from "./Alert";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const QueueRequest = () => {
   const { getCredentials, logout } = useLogin();
@@ -28,7 +27,6 @@ const QueueRequest = () => {
   const { isLoggedIn } = useViewer();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [rankings, setRankings] = useState([]);
   const [queueLength, setQueueLength] = useState(0);
   const [cTicketQuestion, setCTicketQuestion] = useState("");
   const [cTicketLocation, setCTicketLocation] = useState("");
@@ -40,7 +38,6 @@ const QueueRequest = () => {
       setTicket(res.ticket);
       setUser(res.user);
       setQueueLength(res.queue_position + 1);
-      setRankings(res.rankings);
     } else {
       setTicket(null);
       if (isLoggedIn) {
@@ -102,9 +99,13 @@ const QueueRequest = () => {
   if (ticket == null) {
     queueCard = (
       <>
-        <br />
         <Header as="h1">Welcome to the HelpQueue!</Header>
-        <br />
+        {settings && settings.queue_message.length > 0 ? (
+          <Message style={{ textAlign: "left" }}>
+            <MessageHeader>Announcement:</MessageHeader>
+            {settings.queue_message}
+          </Message>
+        ) : null}
         <h2>How can we help you?</h2>
         <br />
         <Form size={"big"} key={"big"}>
@@ -239,62 +240,24 @@ const QueueRequest = () => {
   }
   return (
     <Container>
-      {settings && settings.queue_message.length > 0 ? (
-        <Row>
-          <Col sm="12">
-            <Message>{settings.queue_message}</Message>
-          </Col>
-        </Row>
-      ) : null}
-      <Row>
-        <Col lg={rankings.length > 0 ? "8" : "12"}>
-          <Card color="orange">
-            <div>
-              {user && user.admin_is ? (
-                <Button
-                  id="AdminPage"
-                  href="/admin"
-                  color="red"
-                  className="my-2"
-                >
-                  Admin Page
-                </Button>
-              ) : null}
-              {user && user.mentor_is ? (
-                <Button id="MentorButton" href="/m" className="my-2">
-                  Mentor Queue
-                </Button>
-              ) : null}
-              {settings && settings.queue_status == "true"
-                ? queueCard
-                : "The queue is currently closed"}
-            </div>
-          </Card>
-        </Col>
-        {rankings.length > 0 ? (
-          <Col lg="4">
-            <Card>
-              <h2>Mentor Leaderboard</h2>
-              <ol>
-                {rankings.map(
-                  (
-                    r: { name: string; rating: string; tickets: string },
-                    ind
-                  ) => {
-                    return (
-                      <li key={r.name}>
-                        {r.name} - {r.rating}{" "}
-                        <FontAwesomeIcon icon={faStar} color="gold" /> (
-                        {r.tickets} {r.tickets == "1" ? "ticket" : "tickets"})
-                      </li>
-                    );
-                  }
-                )}
-              </ol>
-            </Card>
-          </Col>
-        ) : null}
-      </Row>
+      <Card color="orange">
+        <div>
+          {user && user.admin_is ? (
+            <Button id="AdminPage" href="/admin" color="red" className="my-2">
+              Admin Page
+            </Button>
+          ) : null}
+          {user && user.mentor_is ? (
+            <Button id="MentorButton" href="/m" className="my-2">
+              Mentor Queue
+            </Button>
+          ) : null}
+
+          {settings && settings.queue_status == "true"
+            ? queueCard
+            : "The queue is currently closed"}
+        </div>
+      </Card>
     </Container>
   );
 };
