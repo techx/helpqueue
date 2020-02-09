@@ -58,7 +58,7 @@ const AppHeader: React.FC = () => {
   return (
     <div>
       <Navbar
-        style={{ backgroundColor: "#146FC1" }}
+        style={{ backgroundColor: !document.body.classList.contains("white") ? "#146FC1": "inherit" }}
         dark={!document.body.classList.contains("white")}
         expand="md"
       >

@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from server.controllers.settings import *
 from server.controllers.users import *
+from server.controllers.tickets import ticket_stats
 from server.api.v1 import return_failure, return_success, require_login
 from typing import cast
 import json
@@ -19,7 +20,8 @@ class AdminGetSettings(Resource):
             return return_failure("no admin privileges")
         return return_success({
             'settings': {s.key:s.value for s in settings},
-            'users': [u.json() for u in users]
+            'users': [u.json() for u in users],
+            'ticket_stats': ticket_stats()
         })
 
 

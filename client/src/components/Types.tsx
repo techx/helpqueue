@@ -11,6 +11,11 @@ export type Ticket = {
   minutes: number;
 };
 
+export type AdminStats = {
+  average_wait: number;
+  average_claimed: number;
+  average_rating: number;
+}
 export type User = {
   id: number;
   email: string;

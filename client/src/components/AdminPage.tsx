@@ -7,7 +7,6 @@ import "jsoneditor-react/es/editor.min.css";
 import React, { useState, useEffect } from "react";
 import useLogin from "../hooks/useLogin";
 import {
-  Button,
   CardBody,
   Card,
   CardTitle,
@@ -18,14 +17,18 @@ import {
   InputGroupAddon,
   InputGroupText
 } from "reactstrap";
+import { Button, Tab } from "semantic-ui-react";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import createAlert, { AlertType } from "./Alert";
-import { User, ClientSettings } from "./Types";
+import { User, ClientSettings, AdminStats } from "./Types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const AdminPage = () => {
   document.body.classList.add("white");
   const { getCredentials, logout } = useLogin();
   const [settingsJSON, setSettingsJSON] = useState<ClientSettings | null>(null);
+  const [adminStats, setAdminStats] = useState<AdminStats | null>(null);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -40,6 +43,7 @@ const AdminPage = () => {
     if (res.success) {
       setSettingsJSON(res.settings);
       setData(res.users);
+      setAdminStats(res.ticket_stats);
       createAlert(AlertType.Success, "Updated User");
     } else {
       createAlert(AlertType.Error, "Failed to update User");
@@ -57,25 +61,25 @@ const AdminPage = () => {
     {
       Header: "Admin",
       accessor: "admin_is",
-      Cell: (row: { original: { id: string }; value: string }) => (
-        <Button
-          onClick={() => promote(row.original.id, "admin", !row.value)}
-          color={row.value ? "primary" : "secondary"}
-        >
-          {row.value ? "IS admin" : "NOT admin"}
-        </Button>
-      )
-    },
-    {
-      Header: "Mentor",
-      accessor: "mentor_is",
-      Cell: (row: { original: { id: string }; value: string }) => (
-        <Button
-          onClick={() => promote(row.original.id, "mentor", !row.value)}
-          color={row.value ? "primary" : "secondary"}
-        >
-          {row.value ? "IS mentor" : "NOT mentor"}
-        </Button>
+      Cell: (row: { original: User; value: string }) => (
+        <>
+          <Button
+            onClick={() =>
+              promote("" + row.original.id, "admin", !row.original.admin_is)
+            }
+            color={row.original.admin_is ? "blue" : "grey"}
+          >
+            admin
+          </Button>
+          <Button
+            onClick={() =>
+              promote("" + row.original.id, "mentor", !row.original.mentor_is)
+            }
+            color={row.original.mentor_is ? "blue" : "grey"}
+          >
+            mentor
+          </Button>
+        </>
       )
     }
   ];
@@ -85,6 +89,7 @@ const AdminPage = () => {
     if (res.success) {
       setSettingsJSON(res.settings);
       setData(res.users);
+      setAdminStats(res.ticket_stats);
     } else {
       createAlert(
         AlertType.Error,
@@ -101,6 +106,7 @@ const AdminPage = () => {
     if (res.success) {
       setSettingsJSON(res.settings);
       setData(res.users);
+      setAdminStats(res.ticket_stats);
       createAlert(AlertType.Success, "Updated JSON");
     } else {
       createAlert(AlertType.Error, "Failed to update JSON");
@@ -125,6 +131,44 @@ const AdminPage = () => {
       );
     }
   }, [searchValue, data]);
+
+  const panes = [
+    {
+      menuItem: "Users",
+      render: () => (
+        <Tab.Pane>
+          <CardTitle>
+            <h2>Users</h2>
+          </CardTitle>
+          <Input
+            placeholder="Search..."
+            value={searchValue}
+            onChange={e => setSearchValue(e.target.value)}
+          />
+          <ReactTable data={filteredData} columns={columns} />
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: "Stats",
+      render: () => (
+        <Tab.Pane>
+          <CardTitle>
+            <h2>Stats</h2>
+          </CardTitle>
+          <p>
+            <b>Average Wait:</b>{" "}
+            {adminStats && (adminStats.average_wait / 60).toFixed(1)} minutes
+            <br />
+            <b>Average Claimed Time:</b>{" "}
+            {adminStats && (adminStats.average_claimed / 60).toFixed(1)} minutes
+            <br />
+            <b>Average Rating:</b> {adminStats && adminStats.average_rating.toFixed(2)} <FontAwesomeIcon icon={faStar} color="gold" /> 
+          </p>
+        </Tab.Pane>
+      )
+    }
+  ];
   return (
     <div className="p-2">
       <h1>Admin Settings Page</h1>
@@ -156,7 +200,7 @@ const AdminPage = () => {
               <Button
                 onClick={updateData}
                 className="col-12 my-2"
-                inverse
+                inverted
                 style={{ backgroundColor: "#3883fa", borderColor: "#3883fa" }}
               >
                 Save JSON Settings
@@ -188,9 +232,12 @@ const AdminPage = () => {
                       "Are you sure you want to remove all ticket and non-admins?"
                     )
                   ) {
-                    const res = await ServerHelper.post(ServerURL.resetEverything, {
-                      ...getCredentials()
-                    });
+                    const res = await ServerHelper.post(
+                      ServerURL.resetEverything,
+                      {
+                        ...getCredentials()
+                      }
+                    );
                     if (res.success) {
                       createAlert(AlertType.Success, "Deleted all tickets");
                       getData();
@@ -200,8 +247,7 @@ const AdminPage = () => {
                   }
                 }}
                 className="col-12 my-2"
-                inverse
-                color="danger"
+                color="red"
               >
                 Reset all non-admin users and tickets
               </Button>
@@ -211,15 +257,7 @@ const AdminPage = () => {
         <Col lg="12" xl="6">
           <Card>
             <CardBody>
-              <CardTitle>
-                <h2>Users</h2>
-              </CardTitle>
-              <Input
-                placeholder="search"
-                value={searchValue}
-                onChange={e => setSearchValue(e.target.value)}
-              />
-              <ReactTable data={filteredData} columns={columns} />
+              <Tab panes={panes} renderActiveOnly={true} />
             </CardBody>
           </Card>
         </Col>

@@ -4,7 +4,27 @@ from server.app import db
 from typing import cast
 import datetime
 from sqlalchemy import or_, and_
+from server.cache import should_cache_function
 
+
+# Mentor rankings update every 60 seconds
+@should_cache_function("ticket_stats", 60)
+def ticket_stats():
+    tickets = Ticket.query.filter(
+        or_(Ticket.status == 3, Ticket.status == 5)).all()
+    wait_total = 0
+    claimed_total = 0
+    rating_total = 0
+    for ticket in tickets:
+        wait_total += ticket.total_unclaimed_seconds
+        claimed_total += ticket.total_claimed_seconds
+        rating_total += ticket.rating
+
+    return {
+        'average_wait': wait_total / len(tickets),
+        'average_claimed': claimed_total / len(tickets),
+        'average_rating': rating_total / len(tickets)
+    }
 
 def get_claimable_tickets(user, override=False):
     if not user.mentor_is and not override:
