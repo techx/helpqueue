@@ -8,6 +8,11 @@ import datetime
 from sqlalchemy import or_, and_
 from server.cache import should_cache_function
 
+def laplaceSmooth(totalRating, totalRatings):
+    alpha = 6
+    beta  = 2
+    return ((totalRating + alpha)/(totalRatings + beta))
+
 # Mentor rankings update every 60 seconds
 @should_cache_function("mentor_rankings", 60)
 def mentor_rankings():
@@ -26,9 +31,8 @@ def mentor_rankings():
                 totalUnrated += 1
         if (totalRatings > 0):
             ret.append({"name": user.name, "rating": "{:.1f}".format(
-                totalRating/totalRatings), "tickets": totalRatings + totalUnrated})
-    return sorted(ret, key=(lambda x: x["rating"]))
-
+                totalRating/totalRatings), "tickets": totalRatings + totalUnrated, "smooth_rating": laplaceSmooth(totalRating, totalRatings)})
+    return sorted(ret, key=(lambda x: -x["smooth_rating"]))
 
 def get_all_users(user, override=False):
     """
