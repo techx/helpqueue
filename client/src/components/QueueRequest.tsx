@@ -106,10 +106,9 @@ const QueueRequest = () => {
             {settings.queue_message}
           </Message>
         ) : null}
-        <h2>How can we help you?</h2>
         <br />
         <Form size={"big"} key={"big"}>
-          <Form.Field required style={{ backgroundColor: "#FFD700" }}>
+          <Form.Field required>
             <label>I need help with...</label>
             <TextArea
               placeholder="describe your problem"
@@ -118,17 +117,16 @@ const QueueRequest = () => {
             />
           </Form.Field>
           <Form.Field required>
+            <label>Find me at:</label>
             <Input
-              placeholder="where are you?"
-              label="Find me at:"
+              placeholder="where are you? i.e. table/room"
               value={cTicketLocation}
               onChange={e => setCTicketLocation(e.target.value)}
             />
           </Form.Field>
-          <Form.Field style={{ backgroundColor: "#FFD700" }}>
+          <Form.Field>
+            <label>Reach me at:</label>
             <Input
-              class="ui yellow label"
-              label="Reach me at:"
               placeholder="additional contact info i.e. cell/email"
               value={cTicketContact}
               onChange={e => setCTicketContact(e.target.value)}

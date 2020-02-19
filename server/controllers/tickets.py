@@ -12,6 +12,13 @@ from server.cache import should_cache_function
 def ticket_stats():
     tickets = Ticket.query.filter(
         or_(Ticket.status == 3, Ticket.status == 5)).all()
+    if len(tickets) == 0:
+        return {
+            'average_wait': 0,
+            'average_claimed': 0,
+            'average_rating': 0
+        }
+
     wait_total = 0
     claimed_total = 0
     rating_total = 0
@@ -19,7 +26,6 @@ def ticket_stats():
         wait_total += ticket.total_unclaimed_seconds
         claimed_total += ticket.total_claimed_seconds
         rating_total += ticket.rating
-
     return {
         'average_wait': wait_total / len(tickets),
         'average_claimed': claimed_total / len(tickets),
