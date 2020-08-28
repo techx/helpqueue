@@ -1,3 +1,4 @@
+from server.helpers import random_id_string
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import relationship
 from server.models import Base
@@ -22,6 +23,9 @@ class Ticket(Base):
     # The data in the request
     data = Column(String, default="\{\}")
 
+    # Random unique link
+    uid = Column(String, default="default")
+
     # 0 = created, 1 = claimed, 2 = unclaimed, 3 = closed, 4 = canceled, 5 = closed AND rated
     status = Column(Integer, default=0)
 
@@ -39,17 +43,18 @@ class Ticket(Base):
 
     def __init__(self, user, data):
         """Initializes a ticket object
-        
+
         Arguments:
             user {User} -- the user requesting the ticket
             data {string} -- the data of the ticket as a string
         """
         self.requestor = user
         self.data = data
+        self.uid = random_id_string(stringLength=12)
 
     def json(self):
         """Returns JSON of the ticket object
-        
+
         Returns:
             JSON -- a dictionary of string: string pairings
         """
@@ -57,6 +62,7 @@ class Ticket(Base):
         return {
             "id": self.id,
             "data": json.loads(self.data),
+            "uid": self.uid,
             "status": self.status,
             "requested_by": self.requestor.name,
             "claimed_by": self.claimant.name if self.claimant else "",

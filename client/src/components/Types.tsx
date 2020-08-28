@@ -5,6 +5,7 @@ export type Ticket = {
     contact: string;
   };
   id: number;
+  uid: string;
   status: number;
   requested_by: string;
   claimed_by: string | null;
@@ -29,6 +30,7 @@ export type User = {
 export type ClientSettings = {
   app_name: string;
   app_contact_email: string;
+  jitsi_link: string;
   app_creator: string;
   queue_status: string;
   queue_message: string;

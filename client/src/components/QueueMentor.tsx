@@ -7,9 +7,11 @@ import createAlert, { AlertType } from "./Alert";
 import { Row, Col } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import useViewer from "../hooks/useViewer";
 
 const QueueMentor = () => {
   const { getCredentials } = useLogin();
+  const { settings } = useViewer();
   const [tickets, setTickets] = useState<Ticket[] | null>(null);
   const [rankings, setRankings] = useState([]);
   const [ticket, setTicket] = useState<Ticket | null>(null);
@@ -49,7 +51,7 @@ const QueueMentor = () => {
     if (tickets == null || queueLength == 0) {
       queueCard = <p>There are no tickets :(</p>;
     } else {
-      queueCard = tickets.map(ticket => {
+      queueCard = tickets.map((ticket) => {
         return (
           <Card key={ticket.id} className="my-2">
             <p>
@@ -61,7 +63,7 @@ const QueueMentor = () => {
               onClick={async () => {
                 const res = await ServerHelper.post(ServerURL.claimTicket, {
                   ...getCredentials(),
-                  ticket_id: ticket.id
+                  ticket_id: ticket.id,
                 });
                 if (res.success) {
                   setTicket(res.ticket);
@@ -92,12 +94,21 @@ const QueueMentor = () => {
           <br />
           <b>Contact:</b> {ticket.data.contact}
         </p>
+        <p>
+          {settings &&
+          settings.jitsi_link &&
+          settings.jitsi_link.includes("://") ? (
+            <a href={settings.jitsi_link + "/" + ticket.uid} target="_blank">
+              {settings.jitsi_link + "/" + ticket.uid}
+            </a>
+          ) : null}
+        </p>
         <div>
           <Button
             onClick={async () => {
               const res = await ServerHelper.post(ServerURL.closeTicket, {
                 ...getCredentials(),
-                ticket_id: ticket.id
+                ticket_id: ticket.id,
               });
               if (res.success) {
                 setTicket(null);
@@ -114,7 +125,7 @@ const QueueMentor = () => {
             onClick={async () => {
               const res = await ServerHelper.post(ServerURL.unclaimTicket, {
                 ...getCredentials(),
-                ticket_id: ticket.id
+                ticket_id: ticket.id,
               });
               if (res.success) {
                 getTickets();

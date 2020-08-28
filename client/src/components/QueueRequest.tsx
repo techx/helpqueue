@@ -12,7 +12,7 @@ import {
   Message,
   TextArea,
   Header,
-  MessageHeader
+  MessageHeader,
 } from "semantic-ui-react";
 import { Row, Col } from "reactstrap";
 import useLogin from "../hooks/useLogin";
@@ -57,7 +57,7 @@ const QueueRequest = () => {
     }
     const res = await ServerHelper.post(ServerURL.cancelTicket, {
       ...getCredentials(),
-      ticket_id: ticket.id
+      ticket_id: ticket.id,
     });
     if (res.success) {
       setTicket(null);
@@ -74,7 +74,7 @@ const QueueRequest = () => {
     const res = await ServerHelper.post(ServerURL.rateTicket, {
       ...getCredentials(),
       ticket_id: ticket.id,
-      rating: cTicketRating
+      rating: cTicketRating,
     });
     if (res.success) {
       setTicket(null);
@@ -100,7 +100,9 @@ const QueueRequest = () => {
     queueCard = (
       <>
         <Header as="h1">Welcome to the HelpQueue!</Header>
-        {settings && settings.queue_message.length > 0 ? (
+        {settings &&
+        settings.queue_message &&
+        settings.queue_message.length > 0 ? (
           <Message style={{ textAlign: "left" }}>
             <MessageHeader>Announcement:</MessageHeader>
             {settings.queue_message}
@@ -113,7 +115,7 @@ const QueueRequest = () => {
             <TextArea
               placeholder="describe your problem"
               value={cTicketQuestion}
-              onChange={e => setCTicketQuestion(e.currentTarget.value)}
+              onChange={(e) => setCTicketQuestion(e.currentTarget.value)}
             />
           </Form.Field>
           <Form.Field required>
@@ -121,7 +123,7 @@ const QueueRequest = () => {
             <Input
               placeholder="where are you? i.e. table/room"
               value={cTicketLocation}
-              onChange={e => setCTicketLocation(e.target.value)}
+              onChange={(e) => setCTicketLocation(e.target.value)}
             />
           </Form.Field>
           <Form.Field>
@@ -129,7 +131,7 @@ const QueueRequest = () => {
             <Input
               placeholder="additional contact info i.e. cell/email"
               value={cTicketContact}
-              onChange={e => setCTicketContact(e.target.value)}
+              onChange={(e) => setCTicketContact(e.target.value)}
             />
           </Form.Field>
         </Form>
@@ -155,8 +157,8 @@ const QueueRequest = () => {
               data: JSON.stringify({
                 question: cTicketQuestion,
                 location: cTicketLocation,
-                contact: cTicketContact.length === 0 ? "N/A" : cTicketContact
-              })
+                contact: cTicketContact.length === 0 ? "N/A" : cTicketContact,
+              }),
             });
             if (res.success) {
               setTicket(res.ticket);
@@ -190,6 +192,15 @@ const QueueRequest = () => {
           <br />
           <b>Contact:</b> {ticket.data.contact}
         </p>
+        <p>
+          {settings &&
+          settings.jitsi_link &&
+          settings.jitsi_link.includes("://") ? (
+            <a href={settings.jitsi_link + "/" + ticket.uid} target="_blank">
+              {settings.jitsi_link + "/" + ticket.uid}
+            </a>
+          ) : null}
+        </p>
         <Button onClick={cancelTicket} className="col-12" color="red">
           Cancel Ticket
         </Button>
@@ -201,7 +212,16 @@ const QueueRequest = () => {
       <>
         <h2>You have been claimed!</h2>
         <p>
-          <b>Claimed by:</b> {ticket.claimed_by}{" "}
+          <b>Claimed by:</b> {ticket.claimed_by}
+        </p>
+        <p>
+          {settings &&
+          settings.jitsi_link &&
+          settings.jitsi_link.includes("://") ? (
+            <a href={settings.jitsi_link + "/" + ticket.uid} target="_blank">
+              {settings.jitsi_link + "/" + ticket.uid}
+            </a>
+          ) : null}
         </p>
         <Button onClick={cancelTicket} className="col-12" color="red">
           Cancel Ticket
