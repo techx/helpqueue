@@ -13,6 +13,7 @@ import {
   TextArea,
   Header,
   MessageHeader,
+  Select,
 } from "semantic-ui-react";
 import { Row, Col } from "reactstrap";
 import useLogin from "../hooks/useLogin";
@@ -29,9 +30,13 @@ const QueueRequest = () => {
   const [user, setUser] = useState<User | null>(null);
   const [queueLength, setQueueLength] = useState(0);
   const [cTicketQuestion, setCTicketQuestion] = useState("");
-  const [cTicketLocation, setCTicketLocation] = useState("");
   const [cTicketContact, setCTicketContact] = useState("");
   const [cTicketRating, setCTicketRating] = useState(0);
+  const locationOptions = ((settings && settings.locations) || "default")
+    .split(",")
+    .map((l) => ({ key: l, value: l, text: l }));
+  const [cTicketLocation, setCTicketLocation] = useState(locationOptions[0].value);
+
   const getTicket = async () => {
     const res = await ServerHelper.post(ServerURL.userTicket, getCredentials());
     if (res.success) {
@@ -119,17 +124,19 @@ const QueueRequest = () => {
             />
           </Form.Field>
           <Form.Field required>
-            <label>Find me at:</label>
-            <Input
-              placeholder="where are you? i.e. table/room"
+            <label>What event?</label>
+            <Select
               value={cTicketLocation}
-              onChange={(e) => setCTicketLocation(e.target.value)}
+              options={locationOptions}
+              onChange={(_e, data) =>
+                setCTicketLocation("" + data.value || "")
+              }
             />
           </Form.Field>
           <Form.Field>
             <label>Reach me at:</label>
             <Input
-              placeholder="additional contact info i.e. cell/email"
+              placeholder="additional table and contact info i.e. cell/email"
               value={cTicketContact}
               onChange={(e) => setCTicketContact(e.target.value)}
             />

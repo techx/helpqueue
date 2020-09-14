@@ -7,7 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #23243F;
+  background-color: #96D0F1;
   font-family: 'Lato', sans-serif;
 }
 
@@ -35,12 +35,12 @@ code {
 }
 
 #MentorButton{
-  background-color: #9600C0;
+  background-color: #3AA5B0;
   color: white;
 }
 
 #AdminPage{
-  background-color: #ec0e6a;
+  background-color: #FBCDC2;
   color: white;
 }
 

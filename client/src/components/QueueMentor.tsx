@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Card } from "semantic-ui-react";
+import { Container, Button, Card, Select } from "semantic-ui-react";
 import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import { Ticket } from "./Types";
@@ -16,6 +16,13 @@ const QueueMentor = () => {
   const [rankings, setRankings] = useState([]);
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [queueLength, setQueueLength] = useState(0);
+  const locationOptions = [{ key: "", value: "default", text: "No filter" }].concat(
+    ((settings && settings.locations) || "default")
+      .split(",")
+      .map((l) => ({ key: l, value: l, text: l }))
+  );
+  const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("default");
 
   const getTickets = async () => {
     const res = await ServerHelper.post(
@@ -37,6 +44,18 @@ const QueueMentor = () => {
       setTickets(null);
     }
   };
+
+  useEffect(() => {
+    if (!tickets) return;
+    if (searchValue === "default") {
+      setFilteredTickets(tickets);
+      return;
+    }
+    setFilteredTickets(
+      tickets.filter((ticket) => ticket.data.location.includes(searchValue))
+    );
+  }, [searchValue, tickets]);
+
   useEffect(() => {
     // On load check to see what the status is of the ticket
     getTickets();
@@ -51,7 +70,7 @@ const QueueMentor = () => {
     if (tickets == null || queueLength == 0) {
       queueCard = <p>There are no tickets :(</p>;
     } else {
-      queueCard = tickets.map((ticket) => {
+      queueCard = filteredTickets.map((ticket) => {
         return (
           <Card key={ticket.id} className="my-2">
             <p>
@@ -147,6 +166,11 @@ const QueueMentor = () => {
           <Card>
             <h2>Mentor Queue</h2>
             <p>Queue length: {queueLength}</p>
+            <Select
+              options={locationOptions}
+              value={searchValue}
+              onChange={(_e, data) => setSearchValue("" + data.value || "")}
+            />
             {queueCard}
           </Card>
         </Col>

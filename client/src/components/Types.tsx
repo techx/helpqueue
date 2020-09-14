@@ -37,4 +37,5 @@ export type ClientSettings = {
   readonly_master_url: string;
   mentor_password_key: string;
   github_client_id: string;
+  locations: string;
 }

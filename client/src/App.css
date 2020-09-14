@@ -10,7 +10,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #1B4481;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -51,7 +51,7 @@
   margin-bottom: .1em;
   content:' ';
   display:block;
-  border:2px solid #4682B4;
+  border:2px solid #001D55;
   border-radius:4px;
   -webkit-border-radius:4px;
   -moz-border-radius:4px;
@@ -66,12 +66,12 @@
 }
 
 .App .card .card .card-title:after {
-  border:0px solid #4682B4;
+  border:0px solid#3AA5B0;
 }
 .App .noshadow .card {
   box-shadow: 0;
 }
 
 .ui.label.label{
-  background-color: #FFD700
+  background-color: #FFDF3F
 }
