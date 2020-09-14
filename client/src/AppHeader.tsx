@@ -48,7 +48,7 @@ const AppHeader: React.FC = () => {
       <DropdownMenu right>
         <DropdownItem>
           <a onClick={() => (window.location.href = "/profile")}>
-            Change your name!
+            Profile
           </a>
         </DropdownItem>
         <DropdownItem onClick={logout}>Logout</DropdownItem>

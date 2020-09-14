@@ -85,7 +85,7 @@ const ProfilePage = () => {
         <Form>
           <Form.Field>
             <Input
-              label="Full Name:"
+              label="Display Name:"
               value={name}
               onChange={e => setName(e.target.value)}
             />
