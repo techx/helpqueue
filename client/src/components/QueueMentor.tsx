@@ -4,7 +4,7 @@ import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import { Ticket } from "./Types";
 import createAlert, { AlertType } from "./Alert";
-import { Row, Col } from "reactstrap";
+import { Row, Col, Badge } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import useViewer from "../hooks/useViewer";
@@ -80,7 +80,7 @@ const QueueMentor = () => {
               <b>mins ago</b>:
             </p>
             <p>{ticket.data.question}</p>
-            <p>{ticket.data.location}</p>
+            <Badge color="primary">{ticket.data.location}</Badge>
             <Button
               onClick={async () => {
                 const res = await ServerHelper.post(ServerURL.claimTicket, {
