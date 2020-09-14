@@ -122,7 +122,7 @@ const ProfilePage = () => {
               Go to Queue!
             </Button>
           ) : null}
-          {!user.mentor_is || user.admin_is ? (
+          {user.mentor_is || user.admin_is ? (
             <Button
               color="blue"
               onClick={() => {

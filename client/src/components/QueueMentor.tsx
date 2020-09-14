@@ -16,7 +16,9 @@ const QueueMentor = () => {
   const [rankings, setRankings] = useState([]);
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [queueLength, setQueueLength] = useState(0);
-  const locationOptions = [{ key: "", value: "default", text: "No filter" }].concat(
+  const locationOptions = [
+    { key: "", value: "default", text: "No filter" },
+  ].concat(
     ((settings && settings.locations) || "default")
       .split(",")
       .map((l) => ({ key: l, value: l, text: l }))
@@ -78,6 +80,7 @@ const QueueMentor = () => {
               <b>mins ago</b>:
             </p>
             <p>{ticket.data.question}</p>
+            <p>{ticket.data.location}</p>
             <Button
               onClick={async () => {
                 const res = await ServerHelper.post(ServerURL.claimTicket, {
@@ -93,7 +96,7 @@ const QueueMentor = () => {
               basic
               color="green"
             >
-              Claim <b>@ the location of</b> {ticket.data.location}
+              Claim
             </Button>
           </Card>
         );

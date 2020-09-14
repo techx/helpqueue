@@ -15,7 +15,6 @@ import {
   MessageHeader,
   Select,
 } from "semantic-ui-react";
-import { Row, Col } from "reactstrap";
 import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import useViewer from "../hooks/useViewer";
