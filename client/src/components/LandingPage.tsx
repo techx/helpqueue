@@ -45,7 +45,7 @@ const LandingPage = (props: RouteComponentProps) => {
           >
             Log in with email
           </Button>
-          {settings && settings.github_client_id ? (
+          {!isMentor && settings && settings.github_client_id ? (
             <Button
               href={
                 "https://github.com/login/oauth/authorize?client_id=" +
