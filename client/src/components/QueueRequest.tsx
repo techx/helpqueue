@@ -158,9 +158,9 @@ const QueueRequest = () => {
             />
           </Form.Field>
           <Form.Field>
-            <label>Reach me at:</label>
+            <label>Contact Info:</label>
             <Input
-              placeholder="additional table and contact info i.e. cell/email"
+              placeholder="i.e. phone number / email etc. in case mentors can't find you"
               value={cTicketContact}
               onChange={(e) => setCTicketContact(e.target.value)}
             />
