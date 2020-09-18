@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 // @ts-ignore
 import Rate from "rc-rate";
 import "rc-rate/assets/index.css";
@@ -31,14 +31,41 @@ const QueueRequest = () => {
   const [cTicketQuestion, setCTicketQuestion] = useState("");
   const [cTicketContact, setCTicketContact] = useState("");
   const [cTicketRating, setCTicketRating] = useState(0);
-  const locationOptions = ((settings && settings.locations) || "default")
+  const locationOptions = ((settings && settings.locations) || "no location")
     .split(",")
     .map((l) => ({ key: l, value: l, text: l }));
-  const [cTicketLocation, setCTicketLocation] = useState(locationOptions[0].value);
+  const [cTicketLocation, setCTicketLocation] = useState(
+    locationOptions[0].value
+  );
+  const [canMakeNotification, setCanMakeNotification] = useState(false);
 
-  const getTicket = async () => {
+  const getTicket = useCallback(async () => {
     const res = await ServerHelper.post(ServerURL.userTicket, getCredentials());
     if (res.success) {
+      const newticket = res.ticket as Ticket | null;
+      if (newticket && (newticket.status == 0 || newticket.status == 2)) {
+        setCanMakeNotification(true);
+      }
+      if (newticket && newticket.status == 1 && canMakeNotification) {
+        const notification = new Notification("Your ticket has been claimed", {
+          body:
+            settings &&
+            settings.jitsi_link &&
+            settings.jitsi_link.includes("://")
+              ? "Click to open up your zoom call link"
+              : "Don't keep your mentor waiting!",
+        });
+        notification.onclick = () => {
+          if (
+            settings &&
+            settings.jitsi_link &&
+            settings.jitsi_link.includes("://")
+          ) {
+            window.open(settings.jitsi_link + "/" + newticket.uid);
+          }
+        };
+        setCanMakeNotification(false);
+      }
       setTicket(res.ticket);
       setUser(res.user);
       setQueueLength(res.queue_position + 1);
@@ -54,7 +81,7 @@ const QueueRequest = () => {
         }
       }
     }
-  };
+  }, [settings, isLoggedIn, canMakeNotification]);
   const cancelTicket = async () => {
     if (ticket == null) {
       return;
@@ -127,9 +154,7 @@ const QueueRequest = () => {
             <Select
               value={cTicketLocation}
               options={locationOptions}
-              onChange={(_e, data) =>
-                setCTicketLocation("" + data.value || "")
-              }
+              onChange={(_e, data) => setCTicketLocation("" + data.value || "")}
             />
           </Form.Field>
           <Form.Field>

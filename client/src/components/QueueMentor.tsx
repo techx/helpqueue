@@ -17,20 +17,24 @@ const QueueMentor = () => {
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [queueLength, setQueueLength] = useState(0);
   const locationOptions = [
-    { key: "", value: "default", text: "No filter" },
+    { key: "", value: "no location", text: "No filter" },
   ].concat(
-    ((settings && settings.locations) || "default")
+    ((settings && settings.locations) || "no location")
       .split(",")
       .map((l) => ({ key: l, value: l, text: l }))
   );
   const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([]);
-  const [searchValue, setSearchValue] = useState<string>("default");
+  const [searchValue, setSearchValue] = useState<string>("no location");
 
   const getTickets = async () => {
     const res = await ServerHelper.post(
       ServerURL.userTickets,
       getCredentials()
     );
+    document.title =
+      `(${res.tickets && res.tickets.length}) ` +
+      (settings ? settings.app_name : "") +
+      " Help Queue";
     if (res.success) {
       setTickets(res.tickets);
       setRankings(res.rankings);
@@ -49,7 +53,7 @@ const QueueMentor = () => {
 
   useEffect(() => {
     if (!tickets) return;
-    if (searchValue === "default") {
+    if (searchValue === "no location") {
       setFilteredTickets(tickets);
       return;
     }
@@ -80,7 +84,12 @@ const QueueMentor = () => {
               <b>mins ago</b>:
             </p>
             <p>{ticket.data.question}</p>
-            <Badge color="primary">{ticket.data.location}</Badge>
+            {ticket.data.location !== "no location" &&
+            ticket.data.location !== "default" ? (
+              <Badge color="primary" className="m-5">
+                {ticket.data.location}
+              </Badge>
+            ) : null}
             <Button
               onClick={async () => {
                 const res = await ServerHelper.post(ServerURL.claimTicket, {

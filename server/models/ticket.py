@@ -24,7 +24,7 @@ class Ticket(Base):
     data = Column(String, default="\{\}")
 
     # Random unique link
-    uid = Column(String, default="default")
+    uid = Column(String, default="no location")
 
     # 0 = created, 1 = claimed, 2 = unclaimed, 3 = closed, 4 = canceled, 5 = closed AND rated
     status = Column(Integer, default=0)

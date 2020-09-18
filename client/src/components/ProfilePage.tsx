@@ -8,6 +8,7 @@ import TagsInput from "react-tagsinput";
 import "react-tagsinput/react-tagsinput.css"; // If using WebPack and style-loader.
 import { useCookies } from "react-cookie";
 import createAlert, { AlertType } from "./Alert";
+import { Alert, Badge } from "reactstrap";
 
 const ProfilePage = () => {
   const { getCredentials } = useLogin();
@@ -16,6 +17,7 @@ const ProfilePage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [name, setName] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
+  const [permissionsGranted, setPermissionsGranted] = useState(true);
 
   const getUser = async () => {
     const res = await ServerHelper.post(ServerURL.userTicket, getCredentials());
@@ -36,7 +38,7 @@ const ProfilePage = () => {
       ...getCredentials(),
       name: name,
       affiliation: "", // TODO(kevinfang): add company affiliation
-      skills: skills.join(";")
+      skills: skills.join(";"),
     });
     if (res.success) {
       setUser(res.user);
@@ -52,7 +54,17 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getUser();
+    if (Notification) {
+      Notification.requestPermission();
+    }
   }, []);
+  const permission = Notification && Notification.permission;
+
+  useEffect(() => {
+    if (Notification && permission !== "granted") {
+      setPermissionsGranted(false);
+    }
+  }, [permission]);
 
   const tempName = user ? user.name : null;
   const tempSkills = user ? user.skills : null;
@@ -62,7 +74,7 @@ const ProfilePage = () => {
       setCookie("name", tempName);
     }
     if (tempSkills) {
-      setSkills(tempSkills.split(";").filter(e => e.length > 0));
+      setSkills(tempSkills.split(";").filter((e) => e.length > 0));
     }
   }, [tempName, tempSkills]);
 
@@ -87,7 +99,7 @@ const ProfilePage = () => {
             <Input
               label="Display Name:"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             />
           </Form.Field>
           <Form.Field>
@@ -105,11 +117,14 @@ const ProfilePage = () => {
           <>
             <Label>
               Technical skills (i.e. javascript, java...):
-              <TagsInput value={skills} onChange={e => setSkills(e)} />
+              <TagsInput value={skills} onChange={(e) => setSkills(e)} />
             </Label>
           </>
         ) : null}
         <br />
+        {!permissionsGranted
+          ? <Alert color="warning">You have not enabled desktop notifications! Consider enabling them! Look at the top left corner</Alert>
+          : null}
         <div>
           <Button onClick={() => saveProfile(null)}>Save Profile</Button>
           {!user.mentor_is || user.admin_is ? (
