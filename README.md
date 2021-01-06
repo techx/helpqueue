@@ -33,14 +33,20 @@ Then edit your `.env` file. Once your database url is correct (you can use `crea
 
     python manage.py db upgrade
 
+[Windows might mess up things click here to fix](https://stackoverflow.com/questions/18664074/getting-error-peer-authentication-failed-for-user-postgres-when-trying-to-ge)
+
 ### Dev run
 
     yarn run dev
     
-or (if you want to debug server side scripts)
+or (if you want to debug server side scripts or if u are on windows)
 
     yarn start
     yarn run dev-server
+
+### Modifying for events
+
+See [FILESTRUCTURE.md](FILESTRUCTURE.md).
 
 Contributing
 ------------

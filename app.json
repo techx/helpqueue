@@ -1,13 +1,13 @@
 {
-  "name": "TechX HelpLIFO",
+  "name": "TechX Help Queue",
   "description": "A simple help queue interface for anything!",
-  "repository": "https://github.com/techx/helplifo",
+  "repository": "https://github.com/techx/helpqueue",
   "keywords": ["helpq", "help queue"],
   "addons": [
     {
       "plan": "heroku-postgresql",
       "options": {
-        "version": "9.5"
+        "version": "12"
       }
     }
   ],
