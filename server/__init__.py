@@ -1,3 +1,7 @@
+from dotenv import load_dotenv, find_dotenv
+print(find_dotenv())
+load_dotenv(dotenv_path=find_dotenv(), verbose=True)
+import os
 from server.app import app, db
 from server.api.v1.api import api
 from flask import Flask

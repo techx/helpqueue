@@ -1,19 +1,22 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-from flask_dotenv import DotEnv
 import os
 
 print("Initializing Backend")
 app = Flask(__name__, static_folder='build')
 
-env = DotEnv(app)
-env.init_app(app, env_file="./.env", verbose_mode=True)
+if "SQLALCHEMY_DATABASE_URI" in os.environ:
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"]
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # For heroku launching
 if "DATABASE_URL" in os.environ:
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+if "PORT" in os.environ:
+    app.config["PORT"] = os.environ["PORT"]
+    
 # Database (uncomment if needed)
 db = SQLAlchemy(app)
 
