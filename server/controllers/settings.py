@@ -30,7 +30,7 @@ def get_all_settings(user, override=False):
     return Setting.query.all()
 
 def set_setting(user, key, value, override=False):
-    if not override and not user.admin_is:
+    if not override and user and not user.admin_is:
         return False
     if (not override and key in SETTINGS_ENV_PERMENANT):
         return False
