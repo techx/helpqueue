@@ -69,6 +69,11 @@ const AppHeader: React.FC = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
+              <NavLink href={"/faq"}>
+                FAQ
+              </NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink
                 href={
                   settings

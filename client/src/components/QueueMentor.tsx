@@ -171,6 +171,16 @@ const QueueMentor = () => {
       </>
     );
   }
+
+  // get top 5 rankings
+  // var i;
+  // const rankingsFiltered: never[] = [];
+  // for(i = 0; i < 5; i++) {
+  //   rankingsFiltered.push(rankings[i]);
+  // }
+    let rankingsFiltered = rankings;
+    // rankingsFiltered = rankings;
+
   return (
     <Container>
       <Row>
@@ -191,7 +201,7 @@ const QueueMentor = () => {
             <Card>
               <h2>Mentor Leaderboard</h2>
               <ol>
-                {rankings.map(
+                {rankingsFiltered.map(
                   (
                     r: { name: string; rating: string; tickets: string },
                     ind

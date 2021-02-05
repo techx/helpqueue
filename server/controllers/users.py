@@ -9,7 +9,7 @@ from sqlalchemy import or_, and_
 from server.cache import should_cache_function
 
 def laplaceSmooth(totalRating, totalRatings):
-    alpha = 6
+    alpha = 6 # was 6
     beta  = 2
     return ((totalRating + alpha)/(totalRatings + beta))
 
@@ -32,11 +32,13 @@ def mentor_rankings():
         unrated_tickets = Ticket.query.filter_by(claimant=user, status=3).all()
         totalUnrated += len(unrated_tickets)
 
-        if (totalRatings > 0):
-            ret.append({"name": user.name, "rating": "{:.1f}".format(
+        if (totalRatings > 0): # "{:.1f}".format
+            ret.append({"name": user.name, "rating": (
                 totalRating/totalRatings), "tickets": totalRatings + totalUnrated, "smooth_rating": laplaceSmooth(totalRating, totalRatings)})
-    
-    return sorted(ret, key=(lambda x: -x["smooth_rating"]))
+
+    # return sorted(ret, key=(lambda x: -x["smooth_rating"]))
+    # sort first by rating, then by number of tickets
+    return sorted(ret, key=(lambda x: (-x["rating"], -x["tickets"])))
 
 def get_all_users(user, override=False):
     """

@@ -23,9 +23,13 @@ cron_job()
 try:
     if "MASTER_EMAIL" in os.environ:
         set_setting(None, SETTING_MASTER_USER, os.environ["MASTER_EMAIL"], override=True)
+    if os.getenv("MASTER_EMAIL") is not None:
+        set_setting(None, SETTING_MASTER_USER, os.getenv("MASTER_EMAIL"), override=True)
 
     if "REACT_APP_SITEURL" in os.environ:
         app.config["REACT_APP_SITEURL"] = os.environ["REACT_APP_SITEURL"]
+    if os.getenv("REACT_APP_SITEURL") is not None:
+        app.config["REACT_APP_SITEURL"] = os.getenv("REACT_APP_SITEURL")
 
     set_setting(None, SETTING_URL, app.config["REACT_APP_SITEURL"], override=True)
 except:

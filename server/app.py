@@ -9,6 +9,12 @@ if "SQLALCHEMY_DATABASE_URI" in os.environ:
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"]
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+#windows
+if os.getenv("SQLALCHEMY_DATABASE_URI") is not None:
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+
 # For heroku launching
 if "DATABASE_URL" in os.environ:
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
@@ -16,6 +22,10 @@ if "DATABASE_URL" in os.environ:
 
 if "PORT" in os.environ:
     app.config["PORT"] = os.environ["PORT"]
+
+#windows
+if os.getenv("PORT") is not None:
+    app.config["PORT"] = os.getenv("PORT")
     
 # Database (uncomment if needed)
 db = SQLAlchemy(app)

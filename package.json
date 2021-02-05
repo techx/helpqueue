@@ -16,5 +16,8 @@
     "prod-server": "gunicorn -b 127.0.0.1:5000 --reload run_server:app",
     "dev": "concurrently -r -k \"yarn start  >/dev/null 2>/dev/null\" \"npm run dev-server\"",
     "prod": "concurrently --kill-others \"yarn start\" \"npm run prod-server\""
+  },
+  "devDependencies": {
+    "ws": "3.3.2"
   }
 }
