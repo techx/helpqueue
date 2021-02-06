@@ -18,6 +18,7 @@ def laplaceSmooth(totalRating, totalRatings):
 def mentor_rankings():
     users = User.query.filter_by(mentor_is=True)
     ret = []
+    len_leaderboard = 10
     for user in users:
         tickets = Ticket.query.filter_by(claimant=user, status=5)
         totalRatings = 0
@@ -38,7 +39,7 @@ def mentor_rankings():
 
     # return sorted(ret, key=(lambda x: -x["smooth_rating"]))
     # sort first by rating, then by number of tickets
-    return sorted(ret, key=(lambda x: (-x["rating"], -x["tickets"])))
+    return sorted(ret, key=(lambda x: (-x["rating"], -x["tickets"])))[:len_leaderboard]
 
 def get_all_users(user, override=False):
     """
