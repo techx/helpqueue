@@ -199,7 +199,7 @@ const QueueMentor = () => {
                   ) => {
                     return (
                       <li key={r.name}>
-                        {r.name} - {r.rating.toString().substring(0, Math.min(3, r.rating.toString().length))}{" "}
+                        {r.name} - {r.rating}{" "}
                         <FontAwesomeIcon icon={faStar} color="gold" /> (
                         {r.tickets} {r.tickets == "1" ? "ticket" : "tickets"})
                       </li>
