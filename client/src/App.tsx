@@ -11,6 +11,7 @@ import QueueRequest from "./components/QueueRequest";
 import QueueMentor from "./components/QueueMentor";
 import AdminPage from "./components/AdminPage";
 import ProfilePage from "./components/ProfilePage";
+import FAQPage from "./components/FAQPage";
 
 import Alert from "react-s-alert";
 
@@ -31,6 +32,7 @@ const App: React.FC = () => {
               <Route path="/login" component={LandingPage} />
               <Route path="/profile" component={ProfilePage} />
               <Route path="/admin" component={AdminPage} />
+              <Route path="/faq" component={FAQPage} />
               <Route path="/" component={QueueRequest} />
             </Switch>
           </div>

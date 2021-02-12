@@ -2,6 +2,7 @@ env/
 .env
 **/__pycache__/
 service_account.json
+env.sh
 
 
 /node_modules

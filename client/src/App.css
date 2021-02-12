@@ -75,3 +75,9 @@
 .ui.label.label{
   background-color: #FFDF3F
 }
+
+/* FAQ PAGE STYLING */
+
+.App .accordion {
+  text-align:left;
+}
