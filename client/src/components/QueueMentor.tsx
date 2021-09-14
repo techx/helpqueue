@@ -8,6 +8,7 @@ import { Row, Col, Badge } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import useViewer from "../hooks/useViewer";
+import "./QueueMentor.css";
 
 const QueueMentor = () => {
   const { getCredentials } = useLogin();
@@ -18,7 +19,7 @@ const QueueMentor = () => {
   const [queueLength, setQueueLength] = useState(0);
   const locationOptions = [
     { key: "", value: "no location", text: "No filter" },
-  ].concat(
+  ].concat([{ key: "Virtual", value: "Virtual", text: "Virtual" }]).concat(
     ((settings && settings.locations) || "no location")
       .split(",")
       .map((l) => ({ key: l, value: l, text: l }))
@@ -85,28 +86,72 @@ const QueueMentor = () => {
             </p>
             <p>{ticket.data.question}</p>
             {ticket.data.location !== "no location" &&
-            ticket.data.location !== "default" ? (
+              ticket.data.location !== "default" ? (
               <Badge color="primary" className="m-5">
                 {ticket.data.location}
               </Badge>
             ) : null}
-            <Button
-              onClick={async () => {
-                const res = await ServerHelper.post(ServerURL.claimTicket, {
-                  ...getCredentials(),
-                  ticket_id: ticket.id,
-                });
-                if (res.success) {
-                  setTicket(res.ticket);
-                  createAlert(AlertType.Success, "Claimed ticket");
-                }
-              }}
-              className="col-12"
-              basic
-              color="green"
-            >
-              Claim
-            </Button>
+            {(ticket.data.location == "Virtual") ?
+              <Button
+                onClick={async () => {
+                  const res = await ServerHelper.post(ServerURL.claimTicket, {
+                    ...getCredentials(),
+                    ticket_id: ticket.id,
+                    claim_location: "virtual",
+                  });
+                  if (res.success) {
+                    setTicket(res.ticket);
+                    createAlert(AlertType.Success, "Claimed ticket");
+                  }
+                }}
+                className="col-12"
+                basic
+                color="green"
+              >
+                Claim Virtual
+              </Button>
+              :
+              <div id="claim-buttons">
+                <Button.Group fluid>
+                  <Button
+                    onClick={async () => {
+                      const res = await ServerHelper.post(ServerURL.claimTicket, {
+                        ...getCredentials(),
+                        ticket_id: ticket.id,
+                        claim_location: "virtual",
+                      });
+                      if (res.success) {
+                        setTicket(res.ticket);
+                        createAlert(AlertType.Success, "Claimed ticket");
+                      }
+                    }}
+                    className="col-12"
+                    basic
+                    color="green"
+                  >
+                    Claim Virtual
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      const res = await ServerHelper.post(ServerURL.claimTicket, {
+                        ...getCredentials(),
+                        ticket_id: ticket.id,
+                        claim_location: "in person",
+                      });
+                      if (res.success) {
+                        setTicket(res.ticket);
+                        createAlert(AlertType.Success, "Claimed ticket");
+                      }
+                    }}
+                    className="col-12"
+                    basic
+                    color="green"
+                  >
+                    Claim In Person
+                  </Button>
+                </Button.Group>
+              </div>
+            }
           </Card>
         );
       });
@@ -127,8 +172,8 @@ const QueueMentor = () => {
         </p>
         <p>
           {settings &&
-          settings.jitsi_link &&
-          settings.jitsi_link.includes("://") ? (
+            settings.jitsi_link &&
+            settings.jitsi_link.includes("://") ? (
             <a href={settings.jitsi_link + "/" + ticket.uid} target="_blank">
               {settings.jitsi_link + "/" + ticket.uid}
             </a>

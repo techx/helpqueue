@@ -1,0 +1,7 @@
+#claim-buttons {
+    text-align: left;
+}
+
+#claim-buttons > * {
+    width: 50%;
+}

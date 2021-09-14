@@ -37,6 +37,9 @@ const QueueRequest = () => {
   const [cTicketLocation, setCTicketLocation] = useState(
     locationOptions[0].value
   );
+  const [cLocation, setCLocation] = useState(
+    "Virtual"
+  );
   const [canMakeNotification, setCanMakeNotification] = useState(false);
 
   const getTicket = useCallback(async () => {
@@ -150,13 +153,23 @@ const QueueRequest = () => {
             />
           </Form.Field>
           <Form.Field required>
-            <label>What event?</label>
+            <label>Location</label>
             <Select
-              value={cTicketLocation}
-              options={locationOptions}
-              onChange={(_e, data) => setCTicketLocation("" + data.value || "")}
+              value={cLocation}
+              options={"Virtual,In Person".split(",").map((l) => ({ key: l, value: l, text: l }))}
+              onChange={(_e, data) => setCLocation("" + data.value || "")}
             />
           </Form.Field>
+          { (cLocation == "In Person") &&
+            <Form.Field required>
+              <label>Table Number</label>
+              <Select
+                value={cTicketLocation}
+                options={locationOptions}
+                onChange={(_e, data) => setCTicketLocation("" + data.value || "")}
+              />
+            </Form.Field>
+          }
           <Form.Field>
             <label>Contact Info:</label>
             <Input
@@ -187,7 +200,7 @@ const QueueRequest = () => {
               ...getCredentials(),
               data: JSON.stringify({
                 question: cTicketQuestion,
-                location: cTicketLocation,
+                location: cLocation == "Virtual" ? "Virtual" : cTicketLocation,
                 contact: cTicketContact.length === 0 ? "N/A" : cTicketContact,
               }),
             });
@@ -245,6 +258,14 @@ const QueueRequest = () => {
         <p>
           <b>Claimed by:</b> {ticket.claimed_by}
         </p>
+        {(ticket.claim_location == "virtual") ?     
+          <p>
+            Claimed by virtual mentor! Please join your mentor at the provided jitsi video link.
+          </p> : 
+          <p>
+            Claimed by in-person mentor! Your mentor will be at your table shortly.
+          </p>   
+        }
         <p>
           {settings &&
           settings.jitsi_link &&

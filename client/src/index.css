@@ -48,3 +48,7 @@ code {
   background-color: #146fc1;
   color: white;
 }
+
+.claim-buttons {
+  display: flex;
+}

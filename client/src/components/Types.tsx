@@ -10,6 +10,7 @@ export type Ticket = {
   requested_by: string;
   claimed_by: string | null;
   minutes: number;
+  claim_location: string
 };
 
 export type AdminStats = {

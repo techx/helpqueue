@@ -59,7 +59,7 @@ def create_ticket(user, data):
     return ticket
 
 
-def claim_ticket(user, ticket):
+def claim_ticket(user, ticket, claim_location):
     """
     returns true if successful
     """
@@ -75,6 +75,7 @@ def claim_ticket(user, ticket):
         ticket.claimant = user
         ticket.date_updated = now
         ticket.status = 1
+        ticket.claim_location = claim_location
         db.session.commit()
         return True
     return False

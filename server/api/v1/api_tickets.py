@@ -23,9 +23,10 @@ class TicketCreate(Resource):
 
 
 TICKET_PARSER = reqparse.RequestParser(bundle_errors=True)
-TICKET_PARSER.add_argument('ticket_id',
+TICKET_PARSER.add_argument('ticket_id', 'claim_location',
                            help='Need ticket',
                            required=True)
+TICKET_PARSER.add_argument('claim_location')
 
 
 class TicketClaim(Resource):
@@ -37,7 +38,7 @@ class TicketClaim(Resource):
         ticket = get_ticket(data["ticket_id"])
         if ticket is None:
             return return_failure("ticket not found")
-        if claim_ticket(user, ticket):
+        if claim_ticket(user, ticket, data["claim_location"]):
             return return_success({'ticket': ticket.json()})
         return return_failure("could not claim ticket")
 

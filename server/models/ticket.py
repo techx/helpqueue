@@ -5,6 +5,7 @@ from server.models import Base
 import datetime
 import secrets
 import json
+import uuid
 
 
 class Ticket(Base):
@@ -41,6 +42,8 @@ class Ticket(Base):
     date_created = Column(DateTime, default=datetime.datetime.now)
     date_updated = Column(DateTime, default=datetime.datetime.now)
 
+    claim_location = Column(String, default="virtual")
+
     def __init__(self, user, data):
         """Initializes a ticket object
 
@@ -66,5 +69,6 @@ class Ticket(Base):
             "status": self.status,
             "requested_by": self.requestor.name,
             "claimed_by": self.claimant.name if self.claimant else "",
-            "minutes": (now-self.date_created).total_seconds()//60
+            "minutes": (now-self.date_created).total_seconds()//60,
+            "claim_location": self.claim_location
         }
