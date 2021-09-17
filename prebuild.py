@@ -8,9 +8,9 @@ print("Post BUILD ENV sync")
 
 if not path.exists(".env"):
     print("******* Post build sync started *********")
-    f = open(".env", "w")
-    for key in os.environ:
-        f.write(f"{key}=\"{os.environ[key]}\"\n")
+    # f = open(".env", "w")
+    # for key in os.environ:
+    #     f.write(f"{key}=\"{os.environ[key]}\"\n")
 
     if('GSHEETS_AUTH64' in os.environ):
         print("Copying over GSHEETS_AUTH64 as well")
