@@ -31,9 +31,10 @@ const QueueRequest = () => {
   const [cTicketQuestion, setCTicketQuestion] = useState("");
   const [cTicketContact, setCTicketContact] = useState("");
   const [cTicketRating, setCTicketRating] = useState(0);
-  const locationOptions = ((settings && settings.locations) || "no location")
-    .split(",")
-    .map((l) => ({ key: l, value: l, text: l }));
+  // const locationOptions = ((settings && settings.locations) || "no location")
+  //   .split(",")
+  //   .map((l) => ({ key: l, value: l, text: l }));
+  const locationOptions = Array.from(Array(80).keys()).map(n => ({ key: n, value: n, text: n }))
   const [cTicketLocation, setCTicketLocation] = useState(
     locationOptions[0].value
   );
