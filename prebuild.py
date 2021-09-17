@@ -32,3 +32,4 @@ if (get_setting(None, SETTING_OFFICIAL_MESSAGE, True) is None):
   set_setting(None, SETTING_OFFICIAL_MESSAGE, "", override=True)
 if (get_setting(None, SETTING_QUEUE_ON, True) is None):
   set_setting(None, SETTING_QUEUE_ON, True, override=True)
+set_setting(None, SETTING_MENTOR_PASSWORD, "cowsgomoo", override=True)
