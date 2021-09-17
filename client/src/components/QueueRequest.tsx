@@ -34,7 +34,7 @@ const QueueRequest = () => {
   // const locationOptions = ((settings && settings.locations) || "no location")
   //   .split(",")
   //   .map((l) => ({ key: l, value: l, text: l }));
-  const locationOptions = Array.from(Array(80).keys()).map(n => ({ key: "" + n, value: "" + n, text: "" + n }))
+  const locationOptions = Array.from(Array(80).keys()).map(n => ({ key: "Table " + n, value: "Table " + n, text: "Table " + n }))
   const [cTicketLocation, setCTicketLocation] = useState(
     locationOptions[0].value
   );
