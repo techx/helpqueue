@@ -23,9 +23,10 @@ else:
 
 from server.controllers.settings import *
 
+print("******* setting settings *********")
 for setting in ALLDEFAULTSETTINGS:
   if (get_setting(None,setting, True) is None):
-    set_setting(None, setting, "HackMIT 2021", override=True)
+    set_setting(None, setting, "HackMIT2021", override=True)
 
 if (get_setting(None, SETTING_OFFICIAL_MESSAGE, True) is None):
   set_setting(None, SETTING_OFFICIAL_MESSAGE, "", override=True)
