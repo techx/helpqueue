@@ -17,8 +17,8 @@ const LandingPage = (props: RouteComponentProps) => {
   return (
     <Container>
       <Card>
-        <h2>{settings ? settings.app_name : "HackMIT 2021"} Help Queue</h2>
-        <h4> Presented by: {settings ? settings.app_creator : "HackMIT"}</h4>
+        <h2> HackMIT 2021 Help Queue</h2>
+        <h4> Presented by: HackMIT</h4>
 
         <p>The easy to use help queue system!</p>
         {isMentor ? (
