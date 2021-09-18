@@ -13,7 +13,7 @@ const FAQPage = () => {
         icon: 'star',
       },
       content: [
-        'Hackers have two ways to sign up: the first is through GitHub and the second is through DopeAuth, which only needs an email confirmation.',
+        'Hackers can sign up with email.',
       ].join(' '),
     },
     {
@@ -51,7 +51,7 @@ const FAQPage = () => {
         icon: 'star',
       },
       content: [
-        'Please reach out in the slack to hackers or mentors. If you are still having difficulties please reach out to a team member at blueprint@hackmit.org.'
+        'Please reach out in the slack to hackers or mentors. If you are still having difficulties please reach out to a team member at help@hackmit.org.'
       ]
     }, {
       key: 'q6',
