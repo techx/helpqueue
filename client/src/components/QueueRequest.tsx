@@ -153,7 +153,7 @@ const QueueRequest = () => {
               onChange={(e) => setCTicketQuestion(e.currentTarget.value)}
             />
           </Form.Field>
-          <Form.Field required>
+          {/* <Form.Field required>
             <label>Location</label>
             <Select
               value={cLocation}
@@ -170,7 +170,7 @@ const QueueRequest = () => {
                 onChange={(_e, data) => setCTicketLocation("" + data.value || "")}
               />
             </Form.Field>
-          }
+          } */}
           <Form.Field>
             <label>Contact Info:</label>
             <Input
@@ -259,14 +259,9 @@ const QueueRequest = () => {
         <p>
           <b>Claimed by:</b> {ticket.claimed_by}
         </p>
-        {(ticket.claim_location == "virtual") ?     
-          <p>
-            Claimed by virtual mentor! Please join your mentor at the provided jitsi video link.
-          </p> : 
-          <p>
-            Claimed by in-person mentor! Your mentor will be at your table shortly.
-          </p>   
-        }
+        <p>
+          Claimed by virtual mentor! Please join your mentor at the provided jitsi video link.
+        </p>
         <p>
           {settings &&
           settings.jitsi_link &&

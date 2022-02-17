@@ -17,7 +17,7 @@ const LandingPage = (props: RouteComponentProps) => {
   return (
     <Container>
       <Card>
-        <h2> HackMIT 2021 Help Queue</h2>
+        <h2> Blueprint 2022 Help Queue</h2>
         <h4> Presented by: HackMIT</h4>
 
         <p>The easy to use help queue system!</p>
