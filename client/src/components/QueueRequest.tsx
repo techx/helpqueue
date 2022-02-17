@@ -39,7 +39,7 @@ const QueueRequest = () => {
     locationOptions[0].value
   );
   const [cLocation, setCLocation] = useState(
-    "Virtual"
+    ""
   );
   const [canMakeNotification, setCanMakeNotification] = useState(false);
 
@@ -171,6 +171,14 @@ const QueueRequest = () => {
               />
             </Form.Field>
           } */}
+          <Form.Field required>
+            <label>Table Number</label>
+            <Select
+              value={cTicketLocation}
+              options={locationOptions}
+              onChange={(_e, data) => setCLocation("" + data.value || "")}
+            />
+          </Form.Field>
           <Form.Field>
             <label>Contact Info:</label>
             <Input
@@ -260,9 +268,9 @@ const QueueRequest = () => {
           <b>Claimed by:</b> {ticket.claimed_by}
         </p>
         <p>
-          Claimed by virtual mentor! Please join your mentor at the provided jitsi video link.
+          Claimed by virtual mentor! Please find
         </p>
-        <p>
+        {/* <p>
           {settings &&
           settings.jitsi_link &&
           settings.jitsi_link.includes("://") ? (
@@ -270,7 +278,7 @@ const QueueRequest = () => {
               {settings.jitsi_link + "/" + ticket.uid}
             </a>
           ) : null}
-        </p>
+        </p> */}
         <Button onClick={cancelTicket} className="col-12" color="red">
           Cancel Ticket
         </Button>

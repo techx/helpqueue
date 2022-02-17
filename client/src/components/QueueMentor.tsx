@@ -19,11 +19,12 @@ const QueueMentor = () => {
   const [queueLength, setQueueLength] = useState(0);
   const locationOptions = [
     { key: "", value: "no location", text: "No filter" },
-  ].concat([{ key: "Virtual", value: "Virtual", text: "Virtual" }]).concat(
-    ((settings && settings.locations) || "no location")
-      .split(",")
-      .map((l) => ({ key: l, value: l, text: l }))
-  );
+  ]
+  // .concat([{ key: "Virtual", value: "Virtual", text: "Virtual" }]).concat(
+  //   ((settings && settings.locations) || "no location")
+  //     .split(",")
+  //     .map((l) => ({ key: l, value: l, text: l }))
+  // );
   const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([]);
   const [searchValue, setSearchValue] = useState<string>("no location");
 
