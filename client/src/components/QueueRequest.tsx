@@ -209,7 +209,7 @@ const QueueRequest = () => {
               ...getCredentials(),
               data: JSON.stringify({
                 question: cTicketQuestion,
-                location: cLocation == "Virtual" ? "Virtual" : cTicketLocation,
+                // location: cLocation == "Virtual" ? "Virtual" : cTicketLocation,
                 contact: cTicketContact.length === 0 ? "N/A" : cTicketContact,
               }),
             });
