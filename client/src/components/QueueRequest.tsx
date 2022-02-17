@@ -171,14 +171,14 @@ const QueueRequest = () => {
               />
             </Form.Field>
           } */}
-          <Form.Field required>
+          {/* <Form.Field required>
             <label>Table Number</label>
             <Select
               value={cTicketLocation}
               options={locationOptions}
               onChange={(_e, data) => setCTicketLocation("" + data.value || "")}
             />
-          </Form.Field>
+          </Form.Field> */}
           <Form.Field>
             <label>Contact Info:</label>
             <Input
@@ -209,7 +209,7 @@ const QueueRequest = () => {
               ...getCredentials(),
               data: JSON.stringify({
                 question: cTicketQuestion,
-                location: cLocation == "Virtual" ? "Virtual" : cTicketLocation,
+                // location: cLocation == "Virtual" ? "Virtual" : cTicketLocation,
                 contact: cTicketContact.length === 0 ? "N/A" : cTicketContact,
               }),
             });
@@ -241,8 +241,8 @@ const QueueRequest = () => {
         <p>
           <b>Question:</b> {ticket.data.question}
           <br />
-          <b>Location:</b> {ticket.data.location}
-          <br />
+          {/* <b>Location:</b> {ticket.data.location}
+          <br /> */}
           <b>Contact:</b> {ticket.data.contact}
         </p>
         <p>
@@ -268,7 +268,7 @@ const QueueRequest = () => {
           <b>Claimed by:</b> {ticket.claimed_by}
         </p>
         <p>
-          Claimed by virtual mentor! Please join your mentor at the provided jitsi video link.
+          You have been claimed! Please join your mentor at the provided jitsi video link.
         </p>
         <p>
           {settings &&
