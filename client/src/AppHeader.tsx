@@ -62,7 +62,7 @@ const AppHeader: React.FC = () => {
         dark={!document.body.classList.contains("white")}
         expand="md"
       >
-        <NavbarBrand href="/m">
+        <NavbarBrand href="/">
           {settings ? settings.app_name : null}
         </NavbarBrand>
         <NavbarToggler onClick={() => setIsOpen(open => !open)} />
