@@ -3,6 +3,7 @@ export type Ticket = {
     question: string;
     location: string;
     contact: string;
+    tags: string[];
   };
   id: number;
   uid: string;
@@ -38,4 +39,5 @@ export type ClientSettings = {
   mentor_password_key: string;
   github_client_id: string;
   locations: string;
+  tags: string;
 }
