@@ -9,6 +9,7 @@ import {
   Card,
   Form,
   Label,
+  Icon,
   Message,
   TextArea,
   Header,
@@ -20,6 +21,8 @@ import ServerHelper, { ServerURL } from "./ServerHelper";
 import useViewer from "../hooks/useViewer";
 import { Ticket, User } from "./Types";
 import createAlert, { AlertType } from "./Alert";
+import TagsInput from "react-tagsinput";
+import ReactTags from 'react-tag-autocomplete'
 
 const QueueRequest = () => {
   const { getCredentials, logout } = useLogin();
@@ -31,10 +34,10 @@ const QueueRequest = () => {
   const [cTicketQuestion, setCTicketQuestion] = useState("");
   const [cTicketContact, setCTicketContact] = useState("");
   const [cTicketRating, setCTicketRating] = useState(0);
-  // const locationOptions = ((settings && settings.locations) || "no location")
-  //   .split(",")
-  //   .map((l) => ({ key: l, value: l, text: l }));
-  const locationOptions = Array.from(Array(80).keys()).map(n => ({ key: "Table " + n, value: "Table " + n, text: "Table " + n }))
+  const [tags, setTags] = useState<string[]>([]);
+  const locationOptions = ((settings && settings.locations) || "no location")
+    .split(",")
+    .map((l) => ({ key: l, value: l, text: l }));
   const [cTicketLocation, setCTicketLocation] = useState(
     locationOptions[0].value
   );
@@ -179,8 +182,11 @@ const QueueRequest = () => {
               onChange={(e) => setCTicketContact(e.target.value)}
             />
           </Form.Field>
-        </Form>
-
+          
+        </Form> 
+       <TagsInput value={tags} onChange={(e) => setTags(e)} />
+       
+        
         <br />
         <Button
           id="CreateTicket"
@@ -203,6 +209,7 @@ const QueueRequest = () => {
                 question: cTicketQuestion,
                 location: cLocation == "Virtual" ? "Virtual" : cTicketLocation,
                 contact: cTicketContact.length === 0 ? "N/A" : cTicketContact,
+                tags: tags.map((tag) => tag.trim()),
               }),
             });
             if (res.success) {

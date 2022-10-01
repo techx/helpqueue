@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Card, Select } from "semantic-ui-react";
+import { Container, Button, Card, Select, Header, Divider } from "semantic-ui-react";
 import useLogin from "../hooks/useLogin";
 import ServerHelper, { ServerURL } from "./ServerHelper";
 import { Ticket } from "./Types";
@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import useViewer from "../hooks/useViewer";
 import "./QueueMentor.css";
+import TagsInput from "react-tagsinput";
 
 const QueueMentor = () => {
   const { getCredentials } = useLogin();
@@ -24,9 +25,12 @@ const QueueMentor = () => {
       .split(",")
       .map((l) => ({ key: l, value: l, text: l }))
   );
+  const [filterTags, setFilterTags] = useState<string[]>([]);
+  
+
   const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([]);
   const [searchValue, setSearchValue] = useState<string>("no location");
-
+  
   const getTickets = async () => {
     const res = await ServerHelper.post(
       ServerURL.userTickets,
@@ -55,13 +59,13 @@ const QueueMentor = () => {
   useEffect(() => {
     if (!tickets) return;
     if (searchValue === "no location") {
-      setFilteredTickets(tickets);
+      setFilteredTickets(tickets.filter((ticket) => filterTags.every(tag => ticket.data.tags.includes(tag))));
       return;
     }
     setFilteredTickets(
-      tickets.filter((ticket) => ticket.data.location.includes(searchValue))
+      tickets.filter((ticket) => ticket.data.location.includes(searchValue) && filterTags.every(tag => ticket.data.tags.includes(tag)))
     );
-  }, [searchValue, tickets]);
+  }, [searchValue, tickets, filterTags]);
 
   useEffect(() => {
     // On load check to see what the status is of the ticket
@@ -79,18 +83,31 @@ const QueueMentor = () => {
     } else {
       queueCard = filteredTickets.map((ticket) => {
         return (
-          <Card key={ticket.id} className="my-2">
-            <p>
+          <Card key={ticket.id} className="my-2" >
+            <Header as='h3' style={{marginBottom: 0}}>
               {ticket.requested_by} <b>asked</b> {ticket.minutes}{" "}
               <b>mins ago</b>:
-            </p>
-            <p>{ticket.data.question}</p>
+            </Header>
+            <Divider/>
+
+            <h3 style={{marginTop: '1rem', marginBottom: '2.5rem'}}>
+              Question: {ticket.data.question}  
+            </h3>
             {ticket.data.location !== "no location" &&
-              ticket.data.location !== "default" ? (
-              <Badge color="primary" className="m-5">
+            ticket.data.location !== "default" ? (
+              <h5>
+                Location: &nbsp; 
+              <Badge color="primary">
                 {ticket.data.location}
               </Badge>
+              </h5>
             ) : null}
+            {ticket.data.tags.length == 0 ? (<> </>) : (
+              <h5>
+                Tags: &nbsp;
+                {ticket.data.tags.map((tag) => (<Badge style={{marginRight: '0.4rem'}} color="primary">{tag}</Badge>))}
+              </h5>
+            )}
             {(ticket.data.location == "Virtual") ?
               <Button
                 onClick={async () => {
@@ -160,16 +177,35 @@ const QueueMentor = () => {
     // Ticket has been claimed
     queueCard = (
       <>
-        <p>
-          <b>You have claimed:</b> {ticket.requested_by}{" "}
-        </p>
-        <p>
-          <b>Question:</b> {ticket.data.question}
-          <br />
-          <b>Location:</b> {ticket.data.location}
-          <br />
-          <b>Contact:</b> {ticket.data.contact}
-        </p>
+      <Card key={ticket.id} className="my-2">
+      <Header as='h3' style={{marginBottom: 0}}>
+        <b>You have claimed:</b> {ticket.requested_by}{" "}
+      </Header>
+      <Divider />
+        <h3>
+          <Badge>
+           {ticket.data.question}
+          </Badge>
+        </h3>
+
+        {ticket.data.location !== "no location" &&
+            ticket.data.location !== "default" ? (
+              <h5>
+                Location: &nbsp; 
+              <Badge color="primary">
+                {ticket.data.location}
+              </Badge>
+              </h5>
+            ) : null}
+
+          {ticket.data.tags.length == 0 ? (<> </>) : (
+              <h5>
+                Tags: &nbsp;
+                {ticket.data.tags.map((tag) => (<Badge style={{marginRight: '0.4rem'}} color="primary">{tag}</Badge>))}
+              </h5>
+            )}
+      </Card>
+       
         <p>
           {settings &&
             settings.jitsi_link &&
@@ -229,6 +265,7 @@ const QueueMentor = () => {
               value={searchValue}
               onChange={(_e, data) => setSearchValue("" + data.value || "")}
             />
+            <TagsInput tagProps={{className: 'react-tagsinput-tag colorthing'}} inputProps={{placeholder: "Filter by Tags"}} value={filterTags}  onChange={(e) => setFilterTags(e)}/>
             {queueCard}
           </Card>
         </Col>
