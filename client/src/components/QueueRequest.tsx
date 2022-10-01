@@ -40,9 +40,10 @@ const QueueRequest = () => {
   for(let x = 1; x < table_nums + 1;x++){
     table_list.push("Table " + x)
   }
-  const locationOptions = ((settings && settings.locations) || "no location")
-    .split(",")
-    .map((l) => ({ key: l, value: l, text: l }));
+  // const locationOptions = ((settings && settings.locations) || "no location")
+  //   .split(",")
+  //   .map((l) => ({ key: l, value: l, text: l }));
+  const locationOptions = table_list.map((l) => ({ key: l, value: l, text: l });
   const [cTicketLocation, setCTicketLocation] = useState(
     locationOptions[0].value
   );
@@ -174,7 +175,7 @@ const QueueRequest = () => {
               <label>Table Number</label>
               <Select
                 value={cTicketLocation}
-                options={table_list}
+                options={locationOptions}
                 onChange={(_e, data) => setCTicketLocation("" + data.value || "")}
               />
             </Form.Field>
