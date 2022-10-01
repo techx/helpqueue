@@ -35,7 +35,12 @@ const QueueRequest = () => {
   const [cTicketContact, setCTicketContact] = useState("");
   const [cTicketRating, setCTicketRating] = useState(0);
   const [tags, setTags] = useState<string[]>([]);
-  const locationOptions = ((settings && settings.locations) || "no location")
+  const table_nums = 151;
+  let table_list = [];
+  for(let x = 1; x < table_nums + 1;x++){
+    table_list.push("Table " + x)
+  }
+  const locationOptions = table_list.concat((settings && settings.locations) || "no location")
     .split(",")
     .map((l) => ({ key: l, value: l, text: l }));
   const [cTicketLocation, setCTicketLocation] = useState(
