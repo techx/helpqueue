@@ -35,7 +35,7 @@ const AppHeader: React.FC = () => {
     }
   };
 
-  document.title = (settings ? settings.app_name : "") + " HelpLIFO";
+  document.title = (settings ? settings.app_name : "") + " Help Queue";
   useEffect(() => {
     getSettings();
   }, []);
