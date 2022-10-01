@@ -40,7 +40,7 @@ const QueueRequest = () => {
   for(let x = 1; x < table_nums + 1;x++){
     table_list.push("Table " + x)
   }
-  const locationOptions = table_list.concat((settings && settings.locations) || "no location")
+  const locationOptions = ((settings && settings.locations) || "no location")
     .split(",")
     .map((l) => ({ key: l, value: l, text: l }));
   const [cTicketLocation, setCTicketLocation] = useState(
