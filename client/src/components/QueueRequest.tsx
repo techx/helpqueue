@@ -174,7 +174,7 @@ const QueueRequest = () => {
               <label>Table Number</label>
               <Select
                 value={cTicketLocation}
-                options={locationOptions}
+                options={table_list}
                 onChange={(_e, data) => setCTicketLocation("" + data.value || "")}
               />
             </Form.Field>
