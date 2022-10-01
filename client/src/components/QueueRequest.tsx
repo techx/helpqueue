@@ -25,10 +25,6 @@ import TagsInput from "react-tagsinput";
 import ReactTags from 'react-tag-autocomplete'
 
 const QueueRequest = () => {
-  interface tag {
-    id: number, 
-    name: string,
-  }
   const { getCredentials, logout } = useLogin();
   const { settings } = useViewer();
   const { isLoggedIn } = useViewer();
@@ -38,7 +34,7 @@ const QueueRequest = () => {
   const [cTicketQuestion, setCTicketQuestion] = useState("");
   const [cTicketContact, setCTicketContact] = useState("");
   const [cTicketRating, setCTicketRating] = useState(0);
-  const [tags, setTags] = useState<tag[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const locationOptions = ((settings && settings.locations) || "no location")
     .split(",")
     .map((l) => ({ key: l, value: l, text: l }));
@@ -134,15 +130,6 @@ const QueueRequest = () => {
     return null;
   }
 
-  const handleDelete = (i : number) => {
-    const newtags = tags.slice(0);
-    newtags.splice(i,1);
-    setTags(newtags);
-  }
-  const handleAddition = (tag : tag) => {
-    const newtags = tags.concat(tag);
-    setTags(newtags);
-  }
   let queueCard = null;
   if (ticket == null) {
     queueCard = (
@@ -183,16 +170,9 @@ const QueueRequest = () => {
             />
           </Form.Field>
           
-        </Form>
-        <ReactTags suggestions= {[
-        { id: 3, name: "Bananas" },
-        { id: 4, name: "Mangos" },
-        { id: 5, name: "Lemons" },
-        { id: 6, name: "Apricots" }
-      ]} tags={tags} onDelete={handleDelete} onAddition={handleAddition}></ReactTags>
-        <label>Add tags!</label>
-       {//<TagsInput value={tags} onChange={(e) => setTags(e)} />
-       }
+        </Form> 
+       <TagsInput value={tags} onChange={(e) => setTags(e)} />
+       
         
         <br />
         <Button
@@ -216,7 +196,7 @@ const QueueRequest = () => {
                 question: cTicketQuestion,
                 location: cTicketLocation,
                 contact: cTicketContact.length === 0 ? "N/A" : cTicketContact,
-                tags: tags.map((tag) => tag.name.trim()),
+                tags: tags.map((tag) => tag.trim()),
               }),
             });
             if (res.success) {
