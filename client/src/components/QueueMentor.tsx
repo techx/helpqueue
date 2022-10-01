@@ -18,13 +18,23 @@ const QueueMentor = () => {
   const [rankings, setRankings] = useState([]);
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [queueLength, setQueueLength] = useState(0);
+  let table_list = [];
+  const table_nums = 151;
+  for(let x = 1; x < table_nums + 1;x++){
+    table_list.push("Table " + x)
+  }
   const locationOptions = [
     { key: "", value: "no location", text: "No filter" },
   ].concat([{ key: "Virtual", value: "Virtual", text: "Virtual" }]).concat(
-    ((settings && settings.locations) || "no location")
-      .split(",")
-      .map((l) => ({ key: l, value: l, text: l }))
+    table_list.map((l) => ({ key: l, value: l, text: l }))
   );
+  // const locationOptions = [
+  //   { key: "", value: "no location", text: "No filter" },
+  // ].concat([{ key: "Virtual", value: "Virtual", text: "Virtual" }]).concat(
+  //   ((settings && settings.locations) || "no location")
+  //     .split(",")
+  //     .map((l) => ({ key: l, value: l, text: l }))
+  // );
   const [filterTags, setFilterTags] = useState<string[]>([]);
   
 
