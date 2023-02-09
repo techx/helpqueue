@@ -4,6 +4,10 @@ The easy to use help queue system, built on top of Flask + React!
 
 Created and maintained by: [TheReddKing](mailto:kevin21@mit.edu) ([TechX](https://techx.io))
 
+## Versions
+
+- **Node.js**: v16
+- **Python**: v3.8
 
 ### Heroku Deploy
 
