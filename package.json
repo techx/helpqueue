@@ -6,6 +6,9 @@
     "concurrently": "^4.1.1",
     "prettier": "^1.19.1"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "start": "cp .env client/.env; cd client && yarn start",
     "prebuild": "python manage.py db upgrade && python prebuild.py",
